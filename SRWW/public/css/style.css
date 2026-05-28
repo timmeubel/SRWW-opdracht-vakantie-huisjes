@@ -1,54 +1,418 @@
 @import url('./variables.css');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+html, body {
+    height: 100%;
+}
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Outfit', 'Inter', Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: var(--color-bg-body);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: var(--color-bg-container);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px var(--color-shadow);
-}
-
-h1 {
-    color: var(--color-text-dark);
-    margin-bottom: 10px;
-}
-
-p {
-    color: var(--color-text-light);
-    line-height: 1.6;
-}
-
 
 header {
     background-color: var(--color-bg-header);
     padding: 20px 0;
-    margin: -20px -20px 20px -20px;
-    width: calc(100% + 40px);
+    color: var(--color-text-white);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px var(--color-shadow);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 2;
+}
+
+.nav-links li {
+    margin: 0 40px;
+}
+
+.nav-links a, .nav-login a {
+    color: var(--color-text-white);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.05rem;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover, .nav-login a:hover {
+    opacity: 0.8;
+}
+
+.nav-login {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-login a {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 18px;
+    border-radius: 20px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-login a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+/* Main Content Full Width */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Hero / Information Section */
+.info-section {
+    padding: 90px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.info-section h1 {
+    font-size: 3rem;
+    color: var(--color-text-dark);
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.lead-text {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    line-height: 1.8;
+}
+
+/* Feature Cards */
+.info-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+    text-align: left;
+}
+
+.feature-card {
+    background: var(--color-white);
+    padding: 35px 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    color: var(--color-text-dark);
+    margin-bottom: 12px;
+    margin-top: 0;
+    font-weight: 700;
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* CTA Button */
+.cta-button {
+    display: inline-block;
+    background-color: #0f766e; /* Modern Premium Emerald/Teal */
+    color: var(--color-white);
+    padding: 16px 32px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);
+}
+
+.cta-button:hover {
+    background-color: #0d5c56;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.4);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+/* Huisjes Section */
+.huisjes-section {
+    padding: 90px 0;
+    background-color: #f8fafc;
+}
+
+.huisjes-section h2 {
+    font-size: 2.5rem;
+    color: var(--color-text-dark);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 1.15rem;
+    margin-bottom: 60px;
+    margin-top: 0;
+}
+
+.huisjes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+@media (max-width: 1024px) {
+    .huisjes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .huisjes-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Huisje Card Layout */
+.huisje-card {
+    background: var(--color-white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+}
+
+.huisje-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.08), 0 8px 8px -5px rgba(0, 0, 0, 0.03);
+}
+
+/* Colored Image Placeholders */
+.huisje-image-placeholder {
+    height: 160px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 2.8rem;
+    overflow: hidden;
+}
+
+.huisje-image-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+    z-index: 1;
+}
+
+.placeholder-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #0f766e;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.placeholder-icon {
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.huisje-card:hover .placeholder-icon {
+    transform: scale(1.2) rotate(6deg);
+}
+
+/* Custom Nature/Beach gradients for placeholders */
+.img-forest {
+    background: linear-gradient(135deg, #14532d 0%, #15803d 100%);
+}
+
+.img-beach {
+    background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+}
+
+.img-lake {
+    background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+}
+
+.img-purple {
+    background: linear-gradient(135deg, #701a75 0%, #a21caf 100%);
+}
+
+.img-wellness {
+    background: linear-gradient(135deg, #854d0e 0%, #ca8a04 100%);
+}
+
+/* Cottage content */
+.huisje-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.huisje-content h3 {
+    font-size: 1.25rem;
+    color: var(--color-text-dark);
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.huisje-meta {
+    font-size: 0.8rem;
+    color: #0f766e; /* Elegant Teal */
+    font-weight: 700;
+    margin-bottom: 12px;
+    background-color: #f0fdfa;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.huisje-description {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+    flex: 1;
+}
+
+/* Card Booking Footer */
+.huisje-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 15px;
+    margin-top: auto;
+}
+
+.huisje-price {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f766e;
+}
+
+.huisje-price small {
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    font-weight: 400;
+}
+
+.btn-book {
+    background-color: #1e293b;
+    color: var(--color-white);
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-book:hover {
+    background-color: #0f766e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+}
+
+.btn-book:active {
+    transform: translateY(0);
+}
+
+/* Smooth scroll behaviors */
+html {
+    scroll-behavior: smooth;
+}
+
+footer {
+    background-color: var(--color-bg-header);
+    padding: 24px 0;
     color: var(--color-text-white);
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-ul li {
-    float: left;
-    margin-right: 200px;
-    list-style: none;
-}
-
-ul li a {
-    color: var(--color-text-white);
-    text-decoration: none;
-}
-
-ul li a:hover {
-    text-decoration: underline;
+    margin-top: auto;
+    font-size: 0.95rem;
 }
