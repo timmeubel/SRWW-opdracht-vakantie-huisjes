@@ -19,7 +19,10 @@
     <input type="password" name="password" placeholder="Wachtwoord">
     <br><br>
 
-    <button type="submit">Registreren</button>
+    <a href="{{ route('registreer.show') }}" class="btn btn-primary">
+    Ga naar Contact
+</a>
+
 </form>
 
 </body>

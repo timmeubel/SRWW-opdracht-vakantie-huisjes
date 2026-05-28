@@ -27,6 +27,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password)
         ]);
         
-        return $userCreated;
+     
+        return view('/Login');
     }
 }
