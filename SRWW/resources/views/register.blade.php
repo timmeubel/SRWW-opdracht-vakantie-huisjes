@@ -15,13 +15,15 @@
 
     <input type="email" name="email" placeholder="Email">
     <br><br>
-
+    @error('email')
+    <p>{{ $message }}</p>
+@enderror
     <input type="password" name="password" placeholder="Wachtwoord">
     <br><br>
 
-    <a href="{{ route('registreer.show') }}" class="btn btn-primary">
-    Ga naar Contact
-</a>
+ <button type="submit">
+    Registreren
+</button>
 
 </form>
 

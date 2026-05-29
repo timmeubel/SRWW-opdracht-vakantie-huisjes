@@ -15,11 +15,15 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        //$request->validate([
-        //    'name' => 'required',
-        //    'email' => 'required|email|unique:users',
-        //    'password' => 'required|min:6'
-        //]);
+     
+        $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6'
+        ],[
+        'email.unique' => 'Deze email is al in gebruik'
+         ]);
+    
 
         $userCreated = User::create([
             'name' => $request->name,
@@ -27,7 +31,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password)
         ]);
         
-     
-        return view('/Login');
+   
+           return redirect()->route('login');
     }
 }
