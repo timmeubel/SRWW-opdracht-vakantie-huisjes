@@ -26,7 +26,7 @@
     <main class="main-content">
         <section class="loting-section">
             <div class="section-container">
-                <h2>🎫 PV Loting Deelname</h2>
+                <h2>Loting Deelname</h2>
                 <p class="section-subtitle">Meld u aan voor de loting van de vakantiehuisjes door uw top 3 voorkeuren op te geven.</p>
             </div>
         </section>
