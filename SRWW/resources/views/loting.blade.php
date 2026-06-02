@@ -115,12 +115,10 @@
                                     </div>
                                 </div>
                             </li>
-
                             <!-- Choice 3 -->
                             <li class="cottage-selection-item" data-id="3">
                                 <div class="cottage-item-header">
                                     <div class="cottage-item-left">
-                     
                                         <span class="cottage-title">3e Voorkeur</span>
                                     </div>
                                     <div class="cottage-status">
