@@ -33,7 +33,29 @@
 
         <section class="loting-form-section">
             <div class="section-container">
-                <form class="loting-form-container" action="#" method="POST" id="lotingForm">
+                @if(session('success'))
+                    <div class="preference-warning-banner" style="background: #d4edda; border-color: #28a745; color: #155724;">
+                        <span class="warning-icon">🎉</span>
+                        <div><strong>{{ session('success') }}</strong></div>
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="preference-warning-banner" style="background: #f8d7da; border-color: #dc3545; color: #721c24;">
+                        <span class="warning-icon">⚠️</span>
+                        <div>
+                            <strong>Er zijn fouten gevonden:</strong>
+                            <ul style="margin: 4px 0 0 16px;">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
+                <form class="loting-form-container" action="/loting" method="POST" id="lotingForm">
+                    @csrf
                     <!-- Warning banner for duplicate preference selections -->
                     <div id="duplicateWarning" class="preference-warning-banner">
                         <span class="warning-icon">⚠️</span>
@@ -227,11 +249,7 @@
             select.addEventListener('change', validatePreferences);
         });
 
-        // Form submission simulation / success alert
-        lotingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('🎉 Uw loting deelname is succesvol geregistreerd met uw unieke top-3 voorkeuren!');
-        });
+        // Form submission — allow it to go through to the server
     });
     </script>
 </body>
