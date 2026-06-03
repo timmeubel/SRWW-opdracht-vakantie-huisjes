@@ -2,13 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class loginController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
-        return view('index');
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect('/');
+        }
+
+        return back()->withErrors([
+            'email' => 'Email of wachtwoord is onjuist.',
+        ])->onlyInput('email');
     }
 }
