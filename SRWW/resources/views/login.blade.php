@@ -8,7 +8,7 @@
 <body>
     <h1>login</h1>
 
-    <form method="POST" action="/register">
+    <form method="POST" action="/login">
     @csrf
 
     <input type="text" name="name" placeholder="Naam">
