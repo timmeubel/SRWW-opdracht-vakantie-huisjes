@@ -74,6 +74,29 @@
                         <input type="text" id="personeelslidnummer" name="personeelslidnummer" class="form-control" placeholder="Bijv. PV-8842" required>
                     </div>
 
+                    <div class="form-group date-range-group">
+                        <label>Vakantieperiode voorkeur</label>
+                        <p class="date-range-hint">Kies de gewenste start- en einddatum voor uw verblijf.</p>
+                        <div class="date-range-wrapper">
+                            <div class="date-input-block">
+                                <label for="week_voorkeur_start">Startdatum</label>
+                                <input type="date" id="week_voorkeur_start" name="week_voorkeur_start"
+                                    class="form-control date-input" required
+                                    min="{{ now()->addDay()->toDateString() }}"
+                                    value="{{ old('week_voorkeur_start') }}">
+                            </div>
+                            <div class="date-range-divider">→</div>
+                            <div class="date-input-block">
+                                <label for="week_voorkeur_eind">Einddatum</label>
+                                <input type="date" id="week_voorkeur_eind" name="week_voorkeur_eind"
+                                    class="form-control date-input" required
+                                    min="{{ now()->addDays(2)->toDateString() }}"
+                                    value="{{ old('week_voorkeur_eind') }}">
+                            </div>
+                        </div>
+                        <div id="dateRangeError" class="date-range-error" style="display:none;">⚠️ De einddatum moet na de startdatum liggen.</div>
+                    </div>
+
                     <div class="form-group">
                         <label style="margin-bottom: 12px;">Uw Top 3 Voorkeuren (Klik op een keuze om een huisje te selecteren)</label>
                         
@@ -249,8 +272,48 @@
             select.addEventListener('change', validatePreferences);
         });
 
-        // Form submission — allow it to go through to the server
+        // 3. Date range validation
+        const startInput = document.getElementById('week_voorkeur_start');
+        const endInput   = document.getElementById('week_voorkeur_eind');
+        const dateError  = document.getElementById('dateRangeError');
+
+        const validateDates = () => {
+            if (!startInput.value || !endInput.value) {
+                dateError.style.display = 'none';
+                return true;
+            }
+            const start = new Date(startInput.value);
+            const end   = new Date(endInput.value);
+            if (end <= start) {
+                dateError.style.display = 'flex';
+                endInput.classList.add('input-error');
+                return false;
+            }
+            dateError.style.display = 'none';
+            endInput.classList.remove('input-error');
+            return true;
+        };
+
+        startInput.addEventListener('change', () => {
+            // Auto-advance end date minimum to day after start
+            if (startInput.value) {
+                const nextDay = new Date(startInput.value);
+                nextDay.setDate(nextDay.getDate() + 1);
+                endInput.min = nextDay.toISOString().split('T')[0];
+            }
+            validateDates();
+        });
+
+        endInput.addEventListener('change', validateDates);
+
+        // Block form submit if dates are invalid
+        lotingForm.addEventListener('submit', (e) => {
+            if (!validateDates()) {
+                e.preventDefault();
+            }
+        });
     });
+
     </script>
 </body>
 </html>

@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Loting extends Model
+class datum extends Model
 {
-    protected $table = 'loting'; 
+    protected $table = 'datum'; 
     
     public $timestamps = false;
     
     protected $fillable = [
-        'moment',
-        'winnaar',
+        'id',
+        'date',
     ];
 }
