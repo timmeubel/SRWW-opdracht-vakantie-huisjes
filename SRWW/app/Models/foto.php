@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Inschrijving extends Model
+class Foto extends Model
 {
     protected $table = 'foto'; 
+    
+    public $timestamps = false;
     
     protected $fillable = [
         'url',

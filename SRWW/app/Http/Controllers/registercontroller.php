@@ -18,7 +18,7 @@ class RegisterController extends Controller
      
         $request->validate([
         'name' => 'required',
-        'email' => 'required|email|unique:users,email',
+        'email' => 'required|email|unique:user,email',
         'password' => 'required|min:6'
         ],[
         'email.unique' => 'Deze email is al in gebruik'
@@ -32,6 +32,6 @@ class RegisterController extends Controller
         ]);
         
    
-           return redirect()->route('login');
+           return redirect('/');
     }
 }

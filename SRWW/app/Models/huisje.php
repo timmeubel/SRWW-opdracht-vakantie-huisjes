@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Inschrijving extends Model
+class Huisje extends Model
 {
     protected $table = 'huisje'; 
+    
+    public $timestamps = false;
     
     protected $fillable = [
         'locatie',

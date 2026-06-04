@@ -18,7 +18,7 @@
                 <li><a href="/loting">Loting</a></li>
             </ul>
             <div class="nav-login">
-                <a href="#">Login</a>
+                <a href="/login">Uitloggen</a>
             </div>
         </nav>
     </header>

@@ -7,20 +7,22 @@ use Illuminate\Support\Facades\Auth;
 
 class loginController extends Controller
 {
-    public function showLogin()
-    {
-        return view('login');
-    }
-
     public function login(Request $request)
     {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/index');
+            return redirect('/');
         }
 
-        return back();
+        return back()->withErrors([
+            'email' => 'Email of wachtwoord is onjuist.',
+        ])->onlyInput('email');
     }
 }
