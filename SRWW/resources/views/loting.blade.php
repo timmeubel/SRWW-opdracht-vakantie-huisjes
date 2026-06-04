@@ -1,28 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vakantie Huisjes</title>
-    <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-spacer"></div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/#huisjes">Huisjes</a></li>
-                <li><a href="/#">Informatie</a></li>
-                <li><a href="/loting" class="active">Loting</a></li>
-            </ul>
-            <div class="nav-login">
-                <a href="#">Login</a>
-            </div>
-        </nav>
-    </header>
+@extends('layout')
 
+@section('content')
     <main class="main-content">
         <section class="loting-section">
             <div class="section-container">
@@ -197,10 +175,9 @@
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Vakantie Huisjes. Alle rechten voorbehouden.</p>
-    </footer>
+@endsection
 
+@section('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const listItems = document.querySelectorAll('.cottage-selection-item');
@@ -315,5 +292,4 @@
     });
 
     </script>
-</body>
-</html>
+@endsection
