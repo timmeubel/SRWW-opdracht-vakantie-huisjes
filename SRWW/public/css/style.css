@@ -957,3 +957,84 @@ footer {
 .btn-submit-loting:active {
     transform: translateY(0);
 }
+
+/* ── Date Range Picker ─────────────────────────────────── */
+.date-range-group > label:first-child {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+}
+
+.date-range-hint {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin: 0 0 14px 0;
+}
+
+.date-range-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.date-input-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.date-input-block label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 0 !important;
+}
+
+.date-input {
+    /* inherits .form-control — just lock height */
+    min-width: 0;
+}
+
+.date-range-divider {
+    font-size: 1.3rem;
+    color: #94a3b8;
+    padding-bottom: 12px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.date-range-error {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background-color: #fef2f2;
+    border: 1px solid #fee2e2;
+    color: #991b1b;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.form-control.input-error {
+    border-color: #ef4444;
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+@media (max-width: 540px) {
+    .date-range-wrapper {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .date-range-divider {
+        display: none;
+    }
+}

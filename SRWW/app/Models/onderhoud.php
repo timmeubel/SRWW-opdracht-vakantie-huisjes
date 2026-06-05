@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Inschrijving extends Model
+class Onderhoud extends Model
 {
     protected $table = 'onderhoud'; 
+    
+    public $timestamps = false;
     
     protected $fillable = [
         'onderhoud_start',
