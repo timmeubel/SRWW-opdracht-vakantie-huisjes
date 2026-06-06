@@ -18,6 +18,12 @@ class loginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            // Check of gebruiker admin is
+            if (Auth::user()->is_admin) {
+                return redirect('/admin');
+            }
+
             return redirect('/');
         }
 
