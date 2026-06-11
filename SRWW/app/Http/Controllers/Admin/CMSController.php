@@ -93,4 +93,33 @@ class CMSController extends Controller
 
         return redirect()->back()->with('success', 'Nieuw vakantiehuisje succesvol toegevoegd!');
     }
+
+    // Delete the photo of a specific house
+    public function deleteHouseImage(Request $request)
+    {
+        $house = VacationHouse::findOrFail($request->input('house_id'));
+
+        if ($house->image_path) {
+            Storage::disk('public')->delete($house->image_path);
+            $house->image_path = null;
+            $house->save();
+        }
+
+        return redirect()->route('admin.cms.index')->with('success', 'Foto van het huisje succesvol verwijderd!');
+    }
+
+    // Delete an entire house (including its photo from storage)
+    public function deleteHouse(Request $request)
+    {
+        $house = VacationHouse::findOrFail($request->input('house_id'));
+
+        // Also remove the image file from disk if it exists
+        if ($house->image_path) {
+            Storage::disk('public')->delete($house->image_path);
+        }
+
+        $house->delete();
+
+        return redirect()->route('admin.cms.index')->with('success', 'Vakantiehuisje succesvol verwijderd!');
+    }
 }

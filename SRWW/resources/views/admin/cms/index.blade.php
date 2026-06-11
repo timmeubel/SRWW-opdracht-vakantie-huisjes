@@ -117,6 +117,30 @@
 
                         <button type="submit" class="btn-submit-green">Huisje {{ $house->id }} Bijwerken</button>
                     </form>
+
+                    {{-- Delete photo form (separate from update form, posts to /admin/cms/delete-image) --}}
+                    @if($house->image_path)
+                        <form action="{{ route('admin.cms.house.image.delete') }}" method="POST"
+                              style="margin-top: 10px;"
+                              onsubmit="return confirm('Weet u zeker dat u de foto wilt verwijderen?')">
+                            @csrf
+                            <input type="hidden" name="house_id" value="{{ $house->id }}">
+                            <button type="submit" style="background:#e53e3e; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:0.85rem; cursor:pointer;">
+                                🗑️ Foto Verwijderen
+                            </button>
+                        </form>
+                    @endif
+
+                    {{-- Delete entire house form --}}
+                    <form action="{{ route('admin.cms.house.delete') }}" method="POST"
+                          style="margin-top: 15px; border-top: 1px solid #fed7d7; padding-top: 15px;"
+                          onsubmit="return confirm('⚠️ Weet u zeker dat u huisje #{{ $house->id }} ({{ $house->name }}) permanent wilt verwijderen? Dit kan niet ongedaan worden gemaakt!')">
+                        @csrf
+                        <input type="hidden" name="house_id" value="{{ $house->id }}">
+                        <button type="submit" style="background:#742a2a; color:#fff; border:none; padding:8px 18px; border-radius:4px; font-size:0.85rem; cursor:pointer; font-weight:bold;">
+                            🗑️ Volledig Huisje Verwijderen
+                        </button>
+                    </form>
                 </div>
             @endforeach
         @endif

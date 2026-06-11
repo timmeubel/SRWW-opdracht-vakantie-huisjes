@@ -38,12 +38,8 @@ Route::get('/admin', [adminController::class, 'admin'])->name('admin');;
 Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::get('/', [CMSController::class, 'index'])->name('index');
     Route::put('/house/{id}', [CMSController::class, 'updateHouse'])->name('house.update');
-    Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
-});
-Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
-    Route::get('/', [CMSController::class, 'index'])->name('index');
-
-    Route::put('/house/{id}', [CMSController::class, 'updateHouse'])->name('house.update');
+    Route::post('/delete-image', [CMSController::class, 'deleteHouseImage'])->name('house.image.delete');
+    Route::post('/delete-house', [CMSController::class, 'deleteHouse'])->name('house.delete');
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
 });
