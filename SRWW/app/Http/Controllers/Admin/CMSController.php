@@ -25,28 +25,31 @@ class CMSController extends Controller
         $house = VacationHouse::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048'  // Validate each uploaded image
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'guests' => 'required|integer|min:1',
+            'bedrooms' => 'required|integer|min:1',
+            'short_description' => 'required|string',
+            'long_description' => 'required|string',
+            'amenities' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         $house->name = $request->name;
-        $house->description = $request->description;
+        $house->location = $request->location;
+        $house->guests = $request->guests;
+        $house->bedrooms = $request->bedrooms;
+        $house->short_description = $request->short_description;
+        $house->long_description = $request->long_description;
+        $house->amenities = $request->amenities;
 
-        // Handle Image Uploads
-        if ($request->hasFile('images')) {
-            $uploadedImages = [];
-            foreach ($request->file('images') as $image) {
-                // Store in public/houses directory
-                $path = $image->store('houses', 'public');
-                $uploadedImages[] = $path;
-            }
-            // Merge new images with old ones, or replace them entirely depending on your preference
-            $house->images = $uploadedImages;
+        // Handle Image Upload
+        if ($request->hasFile('image')) {
+            $house->image_path = $request->file('image')->store('houses', 'public');
         }
 
         $house->save();
-        return redirect()->back()->with('success', 'House updated successfully!');
+        return redirect()->back()->with('success', 'Vakantiehuisje succesvol bijgewerkt!');
     }
 
     // Update Index Page Settings

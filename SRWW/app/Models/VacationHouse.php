@@ -18,6 +18,9 @@ class VacationHouse extends Model
         'short_description',
         'long_description',
         'amenities',
-        'image_path'
+        'image_path',
+        'tag',
+        'icon',
+        'class_theme',
     ];
 }
