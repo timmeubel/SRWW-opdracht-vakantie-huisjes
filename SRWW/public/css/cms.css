@@ -1,0 +1,192 @@
+/* CMS Dashboard Algemeen */
+.cms-dashboard {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2d3748;
+}
+
+.cms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+}
+
+.btn-view-site {
+    text-decoration: none;
+    background: #4a5568;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-view-site:hover {
+    background: #2d3748;
+}
+
+/* Succes Melding */
+.alert-success {
+    background: #c6f6d5;
+    color: #22543d;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Formulier Navigatie / Dropdown & Knoppen */
+.cms-navigation {
+    margin-bottom: 30px;
+    background: #edf2f7;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cms-nav-label {
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.cms-dropdown {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 250px;
+    outline: none;
+}
+
+.cms-dropdown:focus {
+    border-color: #3182ce;
+}
+
+/* Secties & Tab Logica */
+.cms-section {
+    display: none;
+    /* Standaard onzichtbaar */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.cms-section.active {
+    display: block;
+    /* Alleen de actieve sectie is zichtbaar */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Formulieren & Kaarten */
+.section-index {
+    background: #f7fafc;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.section-add-house {
+    background: #fffaf0;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #feebc8;
+}
+
+.house-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* FormVelden */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-grid-4 {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Knoppen */
+.btn-submit-blue {
+    background: #3182ce;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-submit-green {
+    background: #38a169;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-submit-orange {
+    background: #dd6b20;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.image-upload-box {
+    background: #edf2f7;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}

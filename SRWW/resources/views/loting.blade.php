@@ -1,39 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vakantie Huisjes</title>
-    <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-spacer"></div>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/#huisjes">Huisjes</a></li>
-                <li><a href="/#">Informatie</a></li>
-                <li><a href="/loting" class="active">Loting</a></li>
-            </ul>
-            <div class="nav-login">
-                <a href="#">Login</a>
-            </div>
-        </nav>
-    </header>
+@extends('layout')
 
+@section('content')
     <main class="main-content">
         <section class="loting-section">
             <div class="section-container">
-                <h2>🎫 PV Loting Deelname</h2>
+                <h2>Loting Deelname</h2>
                 <p class="section-subtitle">Meld u aan voor de loting van de vakantiehuisjes door uw top 3 voorkeuren op te geven.</p>
             </div>
         </section>
 
         <section class="loting-form-section">
             <div class="section-container">
-                <form class="loting-form-container" action="#" method="POST" id="lotingForm">
+                @if(session('success'))
+                    <div class="preference-warning-banner" style="background: #d4edda; border-color: #28a745; color: #155724;">
+                        <span class="warning-icon">🎉</span>
+                        <div><strong>{{ session('success') }}</strong></div>
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="preference-warning-banner" style="background: #f8d7da; border-color: #dc3545; color: #721c24;">
+                        <span class="warning-icon">⚠️</span>
+                        <div>
+                            <strong>Er zijn fouten gevonden:</strong>
+                            <ul style="margin: 4px 0 0 16px;">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
+                <form class="loting-form-container" action="/loting" method="POST" id="lotingForm">
+                    @csrf
                     <!-- Warning banner for duplicate preference selections -->
                     <div id="duplicateWarning" class="preference-warning-banner">
                         <span class="warning-icon">⚠️</span>
@@ -50,6 +50,29 @@
                     <div class="form-group">
                         <label for="personeelslidnummer">Personeelslidnummer</label>
                         <input type="text" id="personeelslidnummer" name="personeelslidnummer" class="form-control" placeholder="Bijv. PV-8842" required>
+                    </div>
+
+                    <div class="form-group date-range-group">
+                        <label>Vakantieperiode voorkeur</label>
+                        <p class="date-range-hint">Kies de gewenste start- en einddatum voor uw verblijf.</p>
+                        <div class="date-range-wrapper">
+                            <div class="date-input-block">
+                                <label for="week_voorkeur_start">Startdatum</label>
+                                <input type="date" id="week_voorkeur_start" name="week_voorkeur_start"
+                                    class="form-control date-input" required
+                                    min="{{ now()->addDay()->toDateString() }}"
+                                    value="{{ old('week_voorkeur_start') }}">
+                            </div>
+                            <div class="date-range-divider">→</div>
+                            <div class="date-input-block">
+                                <label for="week_voorkeur_eind">Einddatum</label>
+                                <input type="date" id="week_voorkeur_eind" name="week_voorkeur_eind"
+                                    class="form-control date-input" required
+                                    min="{{ now()->addDays(2)->toDateString() }}"
+                                    value="{{ old('week_voorkeur_eind') }}">
+                            </div>
+                        </div>
+                        <div id="dateRangeError" class="date-range-error" style="display:none;">⚠️ De einddatum moet na de startdatum liggen.</div>
                     </div>
 
                     <div class="form-group">
@@ -115,12 +138,10 @@
                                     </div>
                                 </div>
                             </li>
-
                             <!-- Choice 3 -->
                             <li class="cottage-selection-item" data-id="3">
                                 <div class="cottage-item-header">
                                     <div class="cottage-item-left">
-                     
                                         <span class="cottage-title">3e Voorkeur</span>
                                     </div>
                                     <div class="cottage-status">
@@ -154,10 +175,9 @@
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Vakantie Huisjes. Alle rechten voorbehouden.</p>
-    </footer>
+@endsection
 
+@section('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const listItems = document.querySelectorAll('.cottage-selection-item');
@@ -229,12 +249,47 @@
             select.addEventListener('change', validatePreferences);
         });
 
-        // Form submission simulation / success alert
+        // 3. Date range validation
+        const startInput = document.getElementById('week_voorkeur_start');
+        const endInput   = document.getElementById('week_voorkeur_eind');
+        const dateError  = document.getElementById('dateRangeError');
+
+        const validateDates = () => {
+            if (!startInput.value || !endInput.value) {
+                dateError.style.display = 'none';
+                return true;
+            }
+            const start = new Date(startInput.value);
+            const end   = new Date(endInput.value);
+            if (end <= start) {
+                dateError.style.display = 'flex';
+                endInput.classList.add('input-error');
+                return false;
+            }
+            dateError.style.display = 'none';
+            endInput.classList.remove('input-error');
+            return true;
+        };
+
+        startInput.addEventListener('change', () => {
+            // Auto-advance end date minimum to day after start
+            if (startInput.value) {
+                const nextDay = new Date(startInput.value);
+                nextDay.setDate(nextDay.getDate() + 1);
+                endInput.min = nextDay.toISOString().split('T')[0];
+            }
+            validateDates();
+        });
+
+        endInput.addEventListener('change', validateDates);
+
+        // Block form submit if dates are invalid
         lotingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('🎉 Uw loting deelname is succesvol geregistreerd met uw unieke top-3 voorkeuren!');
+            if (!validateDates()) {
+                e.preventDefault();
+            }
         });
     });
+
     </script>
-</body>
-</html>
+@endsection

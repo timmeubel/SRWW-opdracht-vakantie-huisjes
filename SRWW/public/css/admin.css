@@ -1,0 +1,37 @@
+body {
+    background-color: aqua;
+}
+
+.grid-admin {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    justify-content: center;
+    gap: 20px;
+}
+
+.grid-admin>div {
+    background-color: red;
+    padding: 200px;
+    margin-bottom: 50px;
+
+    border-radius: 10px;
+}
+
+
+.admin-button {
+    background-color: #2d3748;
+    /* Dark slate gray */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.admin-button:hover {
+    background-color: #1a202c;
+}

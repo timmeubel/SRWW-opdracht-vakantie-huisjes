@@ -16,7 +16,7 @@
                 <li><a href="#huisjes">Huisjes</a></li>
                 <li><a href="#">Informatie</a></li>
                 <li><a href="/loting">Loting</a></li>
-                <li><a href="/account">Loting</a></li>
+                <li><a href="/account">Account</a></li>
             </ul>
             <div class="nav-login">
                 <a href="#">Login</a>

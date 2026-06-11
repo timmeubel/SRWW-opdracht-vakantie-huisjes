@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Inschrijving extends Model
+class Rol extends Model
 {
     protected $table = 'rol'; 
+    
+    public $timestamps = false;
     
     protected $fillable = [
         'admin',

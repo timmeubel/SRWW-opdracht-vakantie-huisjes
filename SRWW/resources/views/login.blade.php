@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
-    <h1>login</h1>
+    <h1>Login</h1>
 
-    <form method="POST" action="/register">
-    @csrf
+    @if ($errors->any())
+        <div style="color: red;">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
 
-    <input type="text" name="name" placeholder="Naam">
-    <br><br>
+    <form method="POST" action="{{ route('login.store') }}">
+        @csrf
 
-    <input type="email" name="email" placeholder="Email">
-    <br><br>
+        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}">
+        <br><br>
 
-    <input type="password" name="password" placeholder="Wachtwoord">
-    <br><br>
+        <input type="password" name="password" placeholder="Wachtwoord">
+        <br><br>
 
-    <button type="submit">login</button>
-    <div>heb je nog geen account regristreer hier</div>
-     <button onclick="window.location='{{ route('register') }}'">
-    Register
-</button>
+        <button type="submit">Login</button>
+    </form>
 
-</form>
+    <div>Heb je nog geen account? Registreer hier:</div>
+    <button onclick="window.location='{{ route('register') }}'">
+        Registreer
+    </button>
 
-</body>
-</html>
 </body>
 </html>
