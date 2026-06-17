@@ -39,7 +39,8 @@ Route::get('/debug-db', function () {
     ]);
 });
 
-Route::get('/admin', [adminController::class, 'admin'])->name('admin');;
+Route::get('/admin', [adminController::class, 'admin'])->name('admin');
+Route::get('/admin/export-inschrijvingen', [adminController::class, 'exportInschrijvingen'])->name('admin.export.inschrijvingen');
 
 Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::get('/', [CMSController::class, 'index'])->name('index');

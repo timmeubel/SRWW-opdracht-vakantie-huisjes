@@ -15,6 +15,11 @@
         <section class="grid-admin">
             <div>
                 <h2>Loting</h2>
+                @auth
+                    @if(Auth::user()->is_admin)
+                        <a href="{{ route('admin.export.inschrijvingen') }}" class="admin-button">📊 Export Inschrijvingen</a>
+                    @endif
+                @endauth
             </div>
             <div>
                 <h2>Huisjesbeheer</h2>
