@@ -25,4 +25,14 @@ class Inschrijving extends Model
         'loting_id',
         'inschrijfronde_id',
     ];
+
+    public function loting()
+    {
+        return $this->belongsTo(Loting::class);
+    }
+
+    public function inschrijfronde()
+    {
+        return $this->belongsTo(Inschrijfronde::class);
+    }
 }

@@ -115,6 +115,42 @@
                             @endif
                         </div>
 
+                        <div class="image-upload-box">
+                            <label style="display:block; font-weight:bold; margin-bottom: 5px; font-size: 0.9rem;">�️ Galerij Foto's Toevoegen (Meerdere Foto's)</label>
+                            <input type="file" name="gallery_photos[]" accept="image/*" multiple>
+                            <p style="font-size: 0.75rem; color: #718096; margin-top: 5px;">Je kan meerdere foto's selecteren die in de galerij zullen verschijnen.</p>
+                            @if($house->fotos && $house->fotos->count() > 0)
+                                <div style="margin-top: 10px;">
+                                    <span style="font-size: 0.8rem; display:block; margin-bottom:5px;"><strong>Huidge galerij foto's:</strong></span>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        @foreach($house->fotos as $foto)
+                                            <div style="position: relative; display: inline-block;">
+                                                <img src="{{ asset('storage/' . $foto->url) }}" style="height: 60px; width: 60px; object-fit: cover; border-radius:4px; border: 1px solid #cbd5e0;">
+                                                <form action="{{ route('admin.cms.house.gallery.delete') }}" method="POST" style="position: absolute; top: -8px; right: -8px;" onsubmit="return confirm('Foto verwijderen?')">
+                                                    @csrf
+                                                    <input type="hidden" name="foto_id" value="{{ $foto->id }}">
+                                                    <button type="submit" style="background: #e53e3e; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; padding: 0; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">×</button>
+                                                </form>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="image-upload-box">
+                            <label style="display:block; font-weight:bold; margin-bottom: 5px; font-size: 0.9rem;">�📄 Huisje PDF Wijzigen</label>
+                            <input type="file" name="pdf" accept="application/pdf">
+                            @if($house->pdf_path)
+                                <div style="margin-top: 10px;">
+                                    <span style="font-size: 0.8rem; display:block; margin-bottom:3px;">Huidsige live PDF:</span>
+                                    <a href="{{ asset('storage/' . $house->pdf_path) }}" target="_blank" style="color: #2b6cb0; text-decoration: underline; font-size: 0.85rem;">
+                                        📎 Download huisje PDF
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+
                         <button type="submit" class="btn-submit-green">Huisje {{ $house->id }} Bijwerken</button>
                     </form>
 
@@ -127,6 +163,19 @@
                             <input type="hidden" name="house_id" value="{{ $house->id }}">
                             <button type="submit" style="background:#e53e3e; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:0.85rem; cursor:pointer;">
                                 🗑️ Foto Verwijderen
+                            </button>
+                        </form>
+                    @endif
+
+                    {{-- Delete PDF form --}}
+                    @if($house->pdf_path)
+                        <form action="{{ route('admin.cms.house.pdf.delete') }}" method="POST"
+                              style="margin-top: 10px;"
+                              onsubmit="return confirm('Weet u zeker dat u de PDF wilt verwijderen?')">
+                            @csrf
+                            <input type="hidden" name="house_id" value="{{ $house->id }}">
+                            <button type="submit" style="background:#e53e3e; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:0.85rem; cursor:pointer;">
+                                🗑️ PDF Verwijderen
                             </button>
                         </form>
                     @endif
@@ -188,6 +237,11 @@
             <div class="form-group" style="margin-bottom: 20px;">
                 <label>📷 Foto Selecteren</label>
                 <input type="file" name="image" accept="image/*">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>📄 PDF Selecteren (Optioneel)</label>
+                <input type="file" name="pdf" accept="application/pdf">
             </div>
 
             <button type="submit" class="btn-submit-orange">Huisje Opslaan en Aanmaken</button>

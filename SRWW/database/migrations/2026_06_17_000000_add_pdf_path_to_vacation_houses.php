@@ -4,16 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('vacation_houses', function (Blueprint $table) {
+            $table->string('pdf_path')->nullable()->after('image_path');
         });
     }
 
@@ -22,6 +20,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user');
+        Schema::table('vacation_houses', function (Blueprint $table) {
+            $table->dropColumn('pdf_path');
+        });
     }
 };

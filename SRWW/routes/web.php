@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/loting', function () {
-    return view('loting');
+    $houses = \App\Models\VacationHouse::all();
+    return view('loting', ['houses' => $houses]);
 });
 Route::post('/loting', [LotingController::class, 'store']);
 
@@ -35,10 +36,13 @@ Route::get('/debug-db', function () {
 
 Route::get('/admin', [adminController::class, 'admin'])->name('admin');;
 
+Route::get('/admin/loting', [\App\Http\Controllers\AdminLotingController::class, 'index'])->name('admin.loting.index');
+
 Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::get('/', [CMSController::class, 'index'])->name('index');
     Route::put('/house/{id}', [CMSController::class, 'updateHouse'])->name('house.update');
     Route::post('/delete-image', [CMSController::class, 'deleteHouseImage'])->name('house.image.delete');
+    Route::post('/delete-pdf', [CMSController::class, 'deleteHousePdf'])->name('house.pdf.delete');
     Route::post('/delete-house', [CMSController::class, 'deleteHouse'])->name('house.delete');
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');

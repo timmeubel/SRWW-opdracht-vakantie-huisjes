@@ -497,27 +497,28 @@ footer {
 /* Modal Close Button */
 .modal-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.8);
+    top: 18px;
+    right: 18px;
+    background: #f1f5f9;
     border: none;
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #1e293b;
-    z-index: 10;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: #475569;
+    z-index: 100;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .modal-close:hover {
-    background-color: var(--color-white);
+    background-color: #e2e8f0;
+    color: #0f766e;
     transform: scale(1.05);
 }
 
@@ -527,15 +528,52 @@ footer {
 
 /* Modal Layout Flow */
 .modal-body-layout {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 35px;
+    padding: 40px;
+    overflow-y: auto;
+    max-height: 85vh;
 }
 
-/* Modal Top Visual Panel */
+/* Elegant scrollbar styling for the modal body layout */
+.modal-body-layout::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body-layout::-webkit-scrollbar-track {
+    background: transparent;
+}
+.modal-body-layout::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+.modal-body-layout::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.modal-col-left {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.modal-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 10px; /* Aligns header nicely and clears close button space */
+}
+
+.modal-header-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 40px; /* Leave space for the close button */
+}
+
+/* Modal Visual Panel (used as image/placeholder box now) */
 .modal-visual-panel {
-    height: 180px;
+    height: 260px;
     flex: none;
     position: relative;
     display: flex;
@@ -546,6 +584,8 @@ footer {
     color: var(--color-white);
     text-align: center;
     overflow: hidden;
+    border-radius: 16px;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.2);
 }
 
 .modal-visual-panel::before {
@@ -560,7 +600,7 @@ footer {
 }
 
 .modal-visual-icon {
-    font-size: 4rem;
+    font-size: 4.5rem;
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
@@ -573,7 +613,9 @@ footer {
 }
 
 .modal-visual-tag {
-    position: relative;
+    position: absolute;
+    top: 15px;
+    left: 15px;
     z-index: 2;
     background: rgba(255, 255, 255, 0.95);
     color: #0f766e;
@@ -583,65 +625,24 @@ footer {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-top: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 600px) {
-    .modal-visual-panel {
-        height: 130px;
-        padding: 20px;
-    }
-    .modal-visual-icon {
-        font-size: 3rem;
-    }
-    .modal-container {
-        max-height: 95vh;
-    }
-}
-
-/* Modal Bottom Details Panel */
-.modal-details-panel {
-    flex: 1;
-    padding: 35px 40px;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--color-white);
-    overflow-y: auto;
-}
-
-@media (max-width: 768px) {
-    .modal-details-panel {
-        padding: 24px 20px;
-    }
-}
-
+/* Modal Typography */
 .modal-title {
-    font-size: 2.1rem;
+    font-size: 2.25rem;
     color: var(--color-text-dark);
-    margin-top: 0;
-    margin-bottom: 12px;
+    margin: 0;
     font-weight: 800;
     letter-spacing: -0.02em;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
 .modal-meta {
     font-size: 0.95rem;
     color: #0f766e;
     font-weight: 700;
-    margin: 0 0 20px 0;
-}
-
-.modal-divider {
-    height: 1px;
-    background-color: #e2e8f0;
-    width: 100%;
-    margin-bottom: 24px;
-}
-
-.modal-description-section {
-    margin-bottom: 24px;
+    margin: 0;
 }
 
 .modal-description-section h3,
@@ -650,43 +651,39 @@ footer {
     font-weight: 800;
     color: #475569;
     margin-top: 0;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 8px;
 }
 
 .modal-long-description {
-    font-size: 0.98rem;
+    font-size: 1rem;
     color: var(--color-text-light);
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0;
 }
 
 .modal-amenities-section {
-    margin-bottom: 30px;
+    margin-top: 5px;
 }
 
 .modal-amenities-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 12px;
 }
 
-@media (max-width: 540px) {
-    .modal-amenities-list {
-        grid-template-columns: 1fr;
-    }
-}
-
 .modal-amenities-list li {
-    font-size: 0.92rem;
+    font-size: 0.95rem;
     color: #334155;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-weight: 500;
 }
 
@@ -694,6 +691,24 @@ footer {
     color: #0d9488;
     font-weight: 800;
     font-size: 1.1rem;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+    .modal-body-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 30px 24px;
+        max-height: 90vh;
+    }
+    
+    .modal-title {
+        font-size: 1.8rem;
+    }
+    
+    .modal-visual-panel {
+        height: 200px;
+    }
 }
 
 /* Loting Section Styling */
