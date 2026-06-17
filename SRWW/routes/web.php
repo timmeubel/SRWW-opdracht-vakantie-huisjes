@@ -17,6 +17,12 @@ Route::post('/loting', [LotingController::class, 'store']);
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
 
+Route::get('/verify-email/notice', function () {
+    return view('verify-email');
+})->name('verify.notice');
+
+Route::get('/verify-email/{token}', [RegisterController::class, 'verifyEmail'])->name('verify.email');
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');
@@ -47,3 +53,4 @@ Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
 });
+
