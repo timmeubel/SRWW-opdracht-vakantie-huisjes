@@ -25,6 +25,13 @@ class CMSController extends Controller
     {
         $house = VacationHouse::findOrFail($id);
 
+        \Illuminate\Support\Facades\Log::debug('updateHouse files check', [
+            'has_gallery_photos' => $request->hasFile('gallery_photos'),
+            'gallery_photos_file' => $request->file('gallery_photos'),
+            'all_files' => $request->allFiles(),
+            'all_data' => $request->except(['gallery_photos', 'image']),
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -99,6 +106,13 @@ class CMSController extends Controller
 
     public function storeHouse(Request $request)
     {
+        \Illuminate\Support\Facades\Log::debug('storeHouse files check', [
+            'has_gallery_photos' => $request->hasFile('gallery_photos'),
+            'gallery_photos_file' => $request->file('gallery_photos'),
+            'all_files' => $request->allFiles(),
+            'all_data' => $request->except(['gallery_photos', 'image']),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -107,7 +121,9 @@ class CMSController extends Controller
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'amenities' => 'nullable|string',
-            'pdf' => 'nullable|mimes:pdf|max:10240'
+            'pdf' => 'nullable|mimes:pdf|max:10240',
+            'gallery_photos' => 'nullable|array',
+            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
 
         if ($request->hasFile('image')) {
@@ -118,11 +134,24 @@ class CMSController extends Controller
             $validated['pdf_path'] = $request->file('pdf')->store('house-pdfs', 'public');
         }
 
-        $validated['tag'] = 'Vakantiehuis';
-        $validated['icon'] = '🏡';
-        $validated['class_theme'] = 'img-forest';
+        $houseData = \Illuminate\Support\Arr::except($validated, ['gallery_photos']);
+        $houseData['tag'] = 'Vakantiehuis';
+        $houseData['icon'] = '🏡';
+        $houseData['class_theme'] = 'img-forest';
 
-        \App\Models\VacationHouse::create($validated);
+        $house = \App\Models\VacationHouse::create($houseData);
+
+        // Handle Gallery Photos Upload
+        if ($request->hasFile('gallery_photos')) {
+            foreach ($request->file('gallery_photos') as $index => $photo) {
+                $path = $photo->store('gallery', 'public');
+                Foto::create([
+                    'vacation_house_id' => $house->id,
+                    'url' => $path,
+                    'sort_order' => $index + 1
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Nieuw vakantiehuisje succesvol toegevoegd!');
     }

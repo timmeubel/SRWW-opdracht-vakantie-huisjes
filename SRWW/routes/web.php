@@ -44,6 +44,7 @@ Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::post('/delete-image', [CMSController::class, 'deleteHouseImage'])->name('house.image.delete');
     Route::post('/delete-pdf', [CMSController::class, 'deleteHousePdf'])->name('house.pdf.delete');
     Route::post('/delete-house', [CMSController::class, 'deleteHouse'])->name('house.delete');
+    Route::post('/delete-gallery-photo', [CMSController::class, 'deleteGalleryPhoto'])->name('house.gallery.delete');
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
 });

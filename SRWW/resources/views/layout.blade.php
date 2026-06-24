@@ -6,6 +6,7 @@
     <title>@yield('title', 'Vakantie Huisjes')</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/huisjes.css') }}">
 </head>
 <body>
     <header>

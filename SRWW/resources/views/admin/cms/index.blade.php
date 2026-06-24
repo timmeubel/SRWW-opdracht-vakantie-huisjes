@@ -17,6 +17,17 @@
         </div>
     @endif
 
+    {{-- Foutmeldingen Alert --}}
+    @if($errors->any())
+        <div class="alert-danger" style="background: #fed7d7; border: 1px solid #f5c6cb; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="cms-navigation">
         <label for="cmsSectionSelect" class="cms-nav-label">Kies wat u wilt beheren:</label>
         <select id="cmsSectionSelect" class="cms-dropdown">
@@ -126,11 +137,7 @@
                                         @foreach($house->fotos as $foto)
                                             <div style="position: relative; display: inline-block;">
                                                 <img src="{{ asset('storage/' . $foto->url) }}" style="height: 60px; width: 60px; object-fit: cover; border-radius:4px; border: 1px solid #cbd5e0;">
-                                                <form action="{{ route('admin.cms.house.gallery.delete') }}" method="POST" style="position: absolute; top: -8px; right: -8px;" onsubmit="return confirm('Foto verwijderen?')">
-                                                    @csrf
-                                                    <input type="hidden" name="foto_id" value="{{ $foto->id }}">
-                                                    <button type="submit" style="background: #e53e3e; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; padding: 0; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">×</button>
-                                                </form>
+                                                <button type="button" class="btn-delete-foto" data-id="{{ $foto->id }}" style="position: absolute; top: -8px; right: -8px; background: #e53e3e; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; padding: 0; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">×</button>
                                             </div>
                                         @endforeach
                                     </div>
@@ -235,8 +242,14 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
-                <label>📷 Foto Selecteren</label>
+                <label>📷 Hoofdfoto Selecteren</label>
                 <input type="file" name="image" accept="image/*">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>🖼️ Galerij Foto's Toevoegen (Meerdere Foto's)</label>
+                <input type="file" name="gallery_photos[]" accept="image/*" multiple>
+                <p style="font-size: 0.75rem; color: #718096; margin-top: 5px;">Selecteer één of meerdere foto's voor de fotogalerij van dit huisje.</p>
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
@@ -246,7 +259,10 @@
 
             <button type="submit" class="btn-submit-orange">Huisje Opslaan en Aanmaken</button>
         </form>
-    </div>
+    <form id="delete-foto-form" action="{{ route('admin.cms.house.gallery.delete') }}" method="POST" style="display: none;">
+        @csrf
+        <input type="hidden" name="foto_id" id="delete-foto-id">
+    </form>
 
 </div>
 
@@ -268,6 +284,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSection) {
             activeSection.classList.add('active');
         }
+    });
+
+    // Delete gallery photo JS handler to avoid nested forms
+    document.querySelectorAll('.btn-delete-foto').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Weet u zeker dat u deze foto uit de galerij wilt verwijderen?')) {
+                const fotoId = this.getAttribute('data-id');
+                document.getElementById('delete-foto-id').value = fotoId;
+                document.getElementById('delete-foto-form').submit();
+            }
+        });
     });
 });
 </script>

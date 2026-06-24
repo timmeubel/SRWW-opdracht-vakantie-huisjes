@@ -60,7 +60,7 @@
                              data-long-description="{{ $house->long_description }}"
                              data-amenities="{{ $house->amenities }}"
                              data-image="{{ $house->image_path ? asset('storage/' . $house->image_path) : '' }}"
-                             data-photos="{{ htmlspecialchars($photosJson) }}"
+                             data-photos='{!! $photosJson !!}'
                              data-pdf="{{ $house->pdf_path ? asset('storage/' . $house->pdf_path) : '' }}">
                              
                             {{-- Check if there is a custom image uploaded via CMS, otherwise fall back to the CSS class placeholder --}}
@@ -95,48 +95,44 @@
         <div class="modal-container">
             <button class="modal-close" aria-label="Sluit pop-up">&times;</button>
             <div class="modal-body-layout">
-                <!-- Left Column -->
-                <div class="modal-col-left">
-                    <div class="modal-header-section">
-                        <h2 class="modal-title"></h2>
-                        <p class="modal-meta"></p>
-                    </div>
+                <div class="modal-header-section">
+                    <h2 class="modal-title"></h2>
+                    <p class="modal-meta"></p>
+                </div>
+                
+                <!-- Image / Visual Panel with Gallery -->
+                <div class="modal-visual-panel">
+                    <span class="modal-visual-tag"></span>
+                    <span class="modal-visual-icon"></span>
                     
-                    <!-- Image / Visual Panel with Gallery -->
-                    <div class="modal-visual-panel">
-                        <span class="modal-visual-tag"></span>
-                        <span class="modal-visual-icon"></span>
-                        
-                        <!-- Gallery Navigation -->
-                        <div class="modal-gallery-nav" style="display: none;">
-                            <button class="gallery-arrow gallery-prev" aria-label="Vorige foto">◀</button>
-                            <button class="gallery-arrow gallery-next" aria-label="Volgende foto">▶</button>
-                            <div class="gallery-counter"><span class="current-photo">1</span> / <span class="total-photos">1</span></div>
-                        </div>
-
-                        <!-- Thumbnails -->
-                        <div class="gallery-thumbnails" style="display: none; margin-top: 12px; display: flex; gap: 8px; overflow-x: auto; padding: 8px 0;">
-                        </div>
-                    </div>
-                    
-                    <!-- Amenities / Voorzieningen -->
-                    <div class="modal-amenities-section">
-                        <h3>Voorzieningen & Details</h3>
-                        <ul class="modal-amenities-list"></ul>
+                    <!-- Gallery Navigation -->
+                    <div class="modal-gallery-nav" style="display: none;">
+                        <button class="gallery-arrow gallery-prev" aria-label="Vorige foto">◀</button>
+                        <button class="gallery-arrow gallery-next" aria-label="Volgende foto">▶</button>
+                        <div class="gallery-counter"><span class="current-photo">1</span> / <span class="total-photos">1</span></div>
                     </div>
                 </div>
                 
-                <!-- Right Column -->
-                <div class="modal-col-right">
-                    <div class="modal-description-section">
-                        <h3>Beschrijving</h3>
-                        <p class="modal-long-description"></p>
-                    </div>
-                    <div class="modal-pdf-section" style="margin-top: 20px; display: none;">
-                        <a href="#" class="modal-pdf-button" target="_blank" style="display: inline-block; background: #2b6cb0; color: white; padding: 10px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
-                            📄 PDF Openen
-                        </a>
-                    </div>
+                <!-- Thumbnails -->
+                <div class="gallery-thumbnails" style="display: none;">
+                </div>
+                
+                <!-- Amenities / Voorzieningen -->
+                <div class="modal-amenities-section" style="margin-top: 15px;">
+                    <h3>Voorzieningen & Details</h3>
+                    <ul class="modal-amenities-list"></ul>
+                </div>
+
+                <!-- Description -->
+                <div class="modal-description-section" style="margin-top: 15px;">
+                    <h3>Beschrijving</h3>
+                    <p class="modal-long-description"></p>
+                </div>
+
+                <div class="modal-pdf-section" style="margin-top: 20px; display: none;">
+                    <a href="#" class="modal-pdf-button" target="_blank" style="display: inline-block; background: #2b6cb0; color: white; padding: 10px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+                        📄 PDF Openen
+                    </a>
                 </div>
             </div>
         </div>
