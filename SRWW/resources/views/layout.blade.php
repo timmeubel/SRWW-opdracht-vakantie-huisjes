@@ -18,7 +18,7 @@
                 @endauth
                 <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
                 <li><a href="/#huisjes">Huisjes</a></li>
-                <li><a href="/loting" class="{{ request()->is('loting') ? 'active' : '' }}">Loting</a></li>
+                <li><a href="/loting" class="{{ request()->is('loting') ? 'active' : '' }}">Inschrijving</a></li>
             </ul>
             <div class="nav-login">
                 @auth
