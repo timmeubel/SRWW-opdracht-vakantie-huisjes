@@ -14,6 +14,6 @@ class HomeController extends Controller
         $houses = VacationHouse::take(6)->get();
         $settings = Setting::pluck('value', 'key');
 
-        return view('index', compact('houses', 'settings'));
+        return view('home', compact('houses', 'settings'));
     }
 }

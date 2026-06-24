@@ -16,7 +16,7 @@
             <span class="logo-text">Vakantie Huisjes</span>
         </div>
 
-        <h1 class="auth-title">Welkom terug</h1>
+        <h1 class="auth-title">Welkom </h1>
         <p class="auth-subtitle">Voer je gegevens in om toegang te krijgen tot je PV-account</p>
 
         <!-- Validation Errors -->

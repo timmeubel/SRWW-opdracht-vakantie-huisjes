@@ -9,7 +9,11 @@ use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 
-Route::get('/', [HomeController::class, 'index']);
+
+// Dit zorgt ervoor dat de startpagina direct je login-blade laadt
+Route::get('/', function () {
+    return view('login'); // Pas 'auth.login' aan naar de naam van jouw login blade-bestand
+});
 Route::get('/loting', function () {
     $houses = \App\Models\VacationHouse::all();
     return view('loting', ['houses' => $houses]);
@@ -66,3 +70,6 @@ Route::patch('/gebruikers/{user}/toggle-admin', [UserController::class, 'toggleA
 Route::delete('/gebruikers/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::get('/gebruikers', [UserController::class, 'index'])->name('users.index');
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/admin', [adminController::class, 'index'])->name('admin');

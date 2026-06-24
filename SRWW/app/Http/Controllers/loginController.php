@@ -20,12 +20,12 @@ class loginController extends Controller
             $request->session()->regenerate();
 
             // Check of gebruiker admin is via rol_id (Stel: 1 is admin)
-            if (Auth::user()->rol_id == 1) {
-                return redirect('/gebruikers'); 
+            if (Auth::user()->is_admin == 1) {
+                return redirect('/admin'); 
             }
 
             // Normale gebruikers gaan naar de homepagina
-            return redirect('/');
+            return redirect('/home');
         }
 
         return back()->withErrors([
