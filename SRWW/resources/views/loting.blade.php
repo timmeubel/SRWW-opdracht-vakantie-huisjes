@@ -54,7 +54,7 @@
 
                     <div class="form-group date-range-group">
                         <label>Vakantieperiode voorkeur</label>
-                        <p class="date-range-hint">Kies de gewenste start- en einddatum voor uw verblijf.</p>
+                        <p class="date-range-hint">Je start datum is verplicht op een vrijdag en eindddatum.<br>De eerste vrijdag na de gekozen startdatum.</p>
                         <div class="date-range-wrapper">
                             <div class="date-input-block">
                                 <label for="week_voorkeur_start">Startdatum</label>
@@ -97,12 +97,9 @@
                                         <div class="preference-select-wrapper">
                                             <select id="select-1" name="huisje_1" class="preference-select" required>
                                                 <option value="">-- Kies een vakantiehuisje --</option>
-                                                <option value="Bosvilla De Zwijger">🏡 Bosvilla De Zwijger (Veluwe)</option>
-                                                <option value="Duinhuisje Zandvoort">🏖️ Duinhuisje Zandvoort (Zandvoort)</option>
-                                                <option value="Chalet Alpenrust">🚣 Chalet Alpenrust (Giethoorn)</option>
-                                                <option value="Heidehut Ruinen">🌾 Heidehut Ruinen (Drenthe)</option>
-                                                <option value="Wellness Lodge Vijlen">🧖 Wellness Lodge Vijlen (Limburg)</option>
-                                                <option value="Appartement Strandzicht">🏢 Appartement Strandzicht (Scheveningen)</option>
+                                                @foreach($houses as $house)
+                                                    <option value="{{ $house->name }}">{{ $house->icon ?? '🏡' }} {{ $house->name }} ({{ $house->location }})</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -127,12 +124,9 @@
                                         <div class="preference-select-wrapper">
                                             <select id="select-2" name="huisje_2" class="preference-select">
                                                 <option value="">-- Kies een vakantiehuisje --</option>
-                                                <option value="Bosvilla De Zwijger">🏡 Bosvilla De Zwijger (Veluwe)</option>
-                                                <option value="Duinhuisje Zandvoort">🏖️ Duinhuisje Zandvoort (Zandvoort)</option>
-                                                <option value="Chalet Alpenrust">🚣 Chalet Alpenrust (Giethoorn)</option>
-                                                <option value="Heidehut Ruinen">🌾 Heidehut Ruinen (Drenthe)</option>
-                                                <option value="Wellness Lodge Vijlen">🧖 Wellness Lodge Vijlen (Limburg)</option>
-                                                <option value="Appartement Strandzicht">🏢 Appartement Strandzicht (Scheveningen)</option>
+                                                @foreach($houses as $house)
+                                                    <option value="{{ $house->name }}">{{ $house->icon ?? '🏡' }} {{ $house->name }} ({{ $house->location }})</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -155,12 +149,9 @@
                                         <div class="preference-select-wrapper">
                                             <select id="select-3" name="huisje_3" class="preference-select">
                                                 <option value="">-- Kies een vakantiehuisje --</option>
-                                                <option value="Bosvilla De Zwijger">🏡 Bosvilla De Zwijger (Veluwe)</option>
-                                                <option value="Duinhuisje Zandvoort">🏖️ Duinhuisje Zandvoort (Zandvoort)</option>
-                                                <option value="Chalet Alpenrust">🚣 Chalet Alpenrust (Giethoorn)</option>
-                                                <option value="Heidehut Ruinen">🌾 Heidehut Ruinen (Drenthe)</option>
-                                                <option value="Wellness Lodge Vijlen">🧖 Wellness Lodge Vijlen (Limburg)</option>
-                                                <option value="Appartement Strandzicht">🏢 Appartement Strandzicht (Scheveningen)</option>
+                                                @foreach($houses as $house)
+                                                    <option value="{{ $house->name }}">{{ $house->icon ?? '🏡' }} {{ $house->name }} ({{ $house->location }})</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
