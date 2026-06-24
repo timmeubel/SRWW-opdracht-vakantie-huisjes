@@ -12,6 +12,13 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/loting', function () {
     return view('loting');
 });
+Route::get('/account', function () {
+    return view('account', [
+        'activeInschrijving' => auth()->check()
+            ? \App\Models\Inschrijving::where('user_id', auth()->id())->latest()->first()
+            : null,
+    ]);
+})->name('account');
 Route::post('/loting', [LotingController::class, 'store']);
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
