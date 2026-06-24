@@ -18,15 +18,13 @@ class loginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-<<<<<<< HEAD
 
-            // Check of gebruiker admin is
-            if (Auth::user()->is_admin) {
-                return redirect('/admin');
+            // Check of gebruiker admin is via rol_id (Stel: 1 is admin)
+            if (Auth::user()->rol_id == 1) {
+                return redirect('/gebruikers'); 
             }
 
-=======
->>>>>>> d8948be6e361ef2e9f598cb55ec6761723afd248
+            // Normale gebruikers gaan naar de homepagina
             return redirect('/');
         }
 
@@ -34,9 +32,6 @@ class loginController extends Controller
             'email' => 'Email of wachtwoord is onjuist.',
         ])->onlyInput('email');
     }
-<<<<<<< HEAD
-}
-=======
 
     public function logout(Request $request)
     {
@@ -46,4 +41,3 @@ class loginController extends Controller
         return redirect('/');
     }
 }
->>>>>>> d8948be6e361ef2e9f598cb55ec6761723afd248
