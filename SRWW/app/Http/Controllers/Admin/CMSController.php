@@ -40,10 +40,10 @@ class CMSController extends Controller
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'amenities' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20480',
             'pdf' => 'nullable|mimes:pdf|max:10240',
             'gallery_photos' => 'nullable|array',
-            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
+            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:20480'
         ]);
 
         $house->name = $request->name;
@@ -121,9 +121,10 @@ class CMSController extends Controller
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'amenities' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20480',
             'pdf' => 'nullable|mimes:pdf|max:10240',
             'gallery_photos' => 'nullable|array',
-            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048'
+            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:20480'
         ]);
 
         if ($request->hasFile('image')) {
@@ -134,7 +135,7 @@ class CMSController extends Controller
             $validated['pdf_path'] = $request->file('pdf')->store('house-pdfs', 'public');
         }
 
-        $houseData = \Illuminate\Support\Arr::except($validated, ['gallery_photos']);
+        $houseData = \Illuminate\Support\Arr::except($validated, ['gallery_photos', 'image']);
         $houseData['tag'] = 'Vakantiehuis';
         $houseData['icon'] = '🏡';
         $houseData['class_theme'] = 'img-forest';
