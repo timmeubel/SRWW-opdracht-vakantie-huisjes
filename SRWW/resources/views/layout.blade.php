@@ -6,6 +6,7 @@
     <title>@yield('title', 'Vakantie Huisjes')</title>
     <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/huisjes.css') }}">
 </head>
 <body>
     <header>
@@ -17,7 +18,7 @@
                 @endauth
                 <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
                 <li><a href="/#huisjes">Huisjes</a></li>
-                <li><a href="/loting" class="{{ request()->is('loting') ? 'active' : '' }}">Loting</a></li>
+                <li><a href="/loting" class="{{ request()->is('loting') ? 'active' : '' }}">Inschrijving</a></li>
             </ul>
             <div class="nav-login">
                 @auth

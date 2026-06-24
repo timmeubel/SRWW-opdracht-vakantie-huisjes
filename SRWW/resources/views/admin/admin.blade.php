@@ -14,7 +14,12 @@
         </section>
         <section class="grid-admin">
             <div>
-                <h2>Loting</h2>
+                <h2>USERS CRUD</h2>
+                 @auth
+                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
+                @else
+                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
+                @endauth
             </div>
             <div>
                 <h2>Huisjesbeheer</h2>

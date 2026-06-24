@@ -59,164 +59,50 @@
                 <p class="section-subtitle">Kies uit ons exclusieve aanbod van vakantiewoningen</p>
                 
                 <div class="huisjes-grid">
-                    <!-- Huisje 1 -->
-                    <div class="huisje-card" 
-                         data-id="1" 
-                         data-title="Bosvilla De Zwijger"
-                         data-location="Veluwe"
-                         data-guests="6"
-                         data-bedrooms="3"
-                         data-tag="Bosvilla"
-                         data-icon="🏡"
-                         data-class="img-forest"
-                         data-short-description="Een prachtige, moderne bosvilla met een grote privétuin, sauna en een sfeervolle open haard. Ideaal voor natuurliefhebbers."
-                         data-long-description="Bosvilla De Zwijger biedt de ultieme rustzoeker een oase van luxe. Gelegen in de dichte bossen van de Veluwe, geniet u hier van eekhoorntjes in de tuin en de geur van dennenbomen. Na een lange boswandeling kunt u heerlijk opwarmen in uw eigen Finse sauna of gezellig samenkomen rond de sfeervolle open haard."
-                         data-amenities="Finse Sauna, Sfeervolle Open Haard, Grote Privétuin, Huisdieren Toegestaan, Gratis High-speed Wi-Fi, Volledig Uitgeruste Keuken, Eigen Parkeergelegenheid, BBQ & Buitenkeuken">
-                        <div class="huisje-image-placeholder img-forest">
-                            <span class="placeholder-tag">Bosvilla</span>
-                            <span class="placeholder-icon">🏡</span>
-                        </div>
-                        <div class="huisje-content">
-                            <h3>Bosvilla De Zwijger</h3>
-                            <p class="huisje-meta">📍 Veluwe | 👥 6 Pers. | 🛏️ 3 Slpk.</p>
-                            <p class="huisje-description">Een prachtige, moderne bosvilla met een grote privétuin, sauna en een sfeervolle open haard. Ideaal voor natuurliefhebbers.</p>
-                            <div class="huisje-footer">
-                                <span class="huisje-more-info">Meer informatie &rarr;</span>
-                            </div>
-                        </div>
-                    </div>
+                    @foreach($houses as $house)
+                        {{-- Foto's JSON array voor gallerij --}}
+                        @php
+                            $photoUrls = $house->fotos->map(function($foto) { 
+                                return asset('storage/' . $foto->url); 
+                            })->toArray();
+                            $photosJson = json_encode($photoUrls);
+                        @endphp
+                        {{-- The data attributes are dynamically bound to your database properties --}}
+                        <div class="huisje-card" 
+                             data-id="{{ $house->id }}" 
+                             data-title="{{ $house->name }}"
+                             data-location="{{ $house->location }}"
+                             data-guests="{{ $house->guests }}"
+                             data-bedrooms="{{ $house->bedrooms }}"
+                             data-tag="{{ $house->tag }}"
+                             data-icon="{{ $house->icon }}"
+                             data-class="{{ $house->class_theme }}"
+                             data-short-description="{{ $house->short_description }}"
+                             data-long-description="{{ $house->long_description }}"
+                             data-amenities="{{ $house->amenities }}"
+                             data-image="{{ $house->image_path ? asset('storage/' . $house->image_path) : '' }}"
+                             data-photos='{!! $photosJson !!}'
+                             data-pdf="{{ $house->pdf_path ? asset('storage/' . $house->pdf_path) : '' }}">
+                             
+                            {{-- Check if there is a custom image uploaded via CMS, otherwise fall back to the CSS class placeholder --}}
+                            @if($house->image_path)
+                                <div class="huisje-image" style="background-image: url('{{ asset('storage/' . $house->image_path) }}'); background-size: cover; background-position: center; height: 200px; position: relative;">
+                                    <span class="placeholder-tag">{{ $house->tag }}</span>
+                                </div>
+                            @else
+                                <div class="huisje-image-placeholder {{ $house->class_theme }}">
+                                    <span class="placeholder-tag">{{ $house->tag }}</span>
+                                    <span class="placeholder-icon">{{ $house->icon }}</span>
+                                </div>
+                            @endif
 
-                    <!-- Huisje 2 -->
-                    <div class="huisje-card"
-                         data-id="2"
-                         data-title="Duinhuisje Zandvoort"
-                         data-location="Zandvoort"
-                         data-guests="4"
-                         data-bedrooms="2"
-                         data-tag="Duinhuis"
-                         data-icon="🏖️"
-                         data-class="img-beach"
-                         data-short-description="Stijlvol duinhuis op slechts 5 minuten lopen van het strand. Geniet van de zonsondergang vanaf uw ruime privéterras."
-                         data-long-description="Dit stijlvolle, moderne duinhuisje ligt verscholen in de duinen van Zandvoort, op steenworp afstand van de brede zandstranden. Vanaf uw ruime privéterras geniet u van adembenemende zonsondergangen. Het huisje is van alle gemakken voorzien en inclusief twee leenfietsen om de omgeving te verkennen."
-                         data-amenities="5min van het Strand, Ruim Privéterras, Luxe Regendouche, 2 Fietsen Inbegrepen, Vaatwasser & Oven, Smart TV met Netflix, Nespresso Machine, Gratis Wi-Fi">
-                        <div class="huisje-image-placeholder img-beach">
-                            <span class="placeholder-tag">Duinhuis</span>
-                            <span class="placeholder-icon">🏖️</span>
-                        </div>
-                        <div class="huisje-content">
-                            <h3>Duinhuisje Zandvoort</h3>
-                            <p class="huisje-meta">📍 Zandvoort | 👥 4 Pers. | 🛏️ 2 Slpk.</p>
-                            <p class="huisje-description">Stijlvol duinhuis op slechts 5 minuten lopen van het strand. Geniet van de zonsondergang vanaf uw ruime privéterras.</p>
-                            <div class="huisje-footer">
-                                <span class="huisje-more-info">Meer informatie &rarr;</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Huisje 3 -->
-                    <div class="huisje-card"
-                         data-id="3"
-                         data-title="Chalet Alpenrust"
-                         data-location="Giethoorn"
-                         data-guests="2"
-                         data-bedrooms="1"
-                         data-tag="Lakeside"
-                         data-icon="🚣"
-                         data-class="img-lake"
-                         data-short-description="Romantisch chalet direct aan het water met een eigen aanlegsteiger en bootverhuur. De perfecte plek voor een ontspannen weekendje weg."
-                         data-long-description="Chalet Alpenrust is een romantisch toevluchtsoord voor twee personen, direct gelegen aan de schilderachtige grachten van Giethoorn. Met uw eigen elektrische fluisterboot (inbegrepen bij het verblijf) vaart u zo vanaf uw privesteiger de Bovenwijde op. Een knusse en onvergetelijke ervaring."
-                         data-amenities="Direct aan het Water, Elektrische Boat Inbegrepen, Privé Aanlegsteiger, Gezellige Houtkachel, Zonnig Terras, Paddleboards (SUP), Koffiecorner, Gratis Wi-Fi">
-                        <div class="huisje-image-placeholder img-lake">
-                            <span class="placeholder-tag">Lakeside</span>
-                            <span class="placeholder-icon">🚣</span>
-                        </div>
-                        <div class="huisje-content">
-                            <h3>Chalet Alpenrust</h3>
-                            <p class="huisje-meta">📍 Giethoorn | 👥 2 Pers. | 🛏️ 1 Slpk.</p>
-                            <p class="huisje-description">Romantisch chalet direct aan het water met een eigen aanlegsteiger en bootverhuur. De perfecte plek voor een ontspannen weekendje weg.</p>
-                            <div class="huisje-footer">
-                                <span class="huisje-more-info">Meer informatie &rarr;</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Huisje 4 -->
-                    <div class="huisje-card"
-                         data-id="4"
-                         data-title="Heidehut Ruinen"
-                         data-location="Drenthe"
-                         data-guests="8"
-                         data-bedrooms="4"
-                         data-tag="Heideboerderij"
-                         data-icon="🌾"
-                         data-class="img-purple"
-                         data-short-description="Ruime en sfeervolle boerderij gelegen aan de rand van het Nationaal Park Dwingelderveld. Perfect voor grotere gezelschappen."
-                         data-long-description="De Heidehut Ruinen is een ruime, sfeervolle Drentse heideboerderij aan de rand van Nationaal Park Dwingelderveld. Ideaal voor grotere gezinnen of vriendengroepen. Ontspan samen in de houtgestookte hot tub in de tuin, terwijl de kinderen spelen op het grasveld, of organiseer een gezellige BBQ-avond."
-                         data-amenities="Houtgestookte Hot Tub, Grote Omheinde Tuin, Kinderspeeltoestellen, Grote Eettafel (8p), Wasmachine & Droger, Houtskool BBQ, Fietsenberging, Huisdieren Welkom">
-                        <div class="huisje-image-placeholder img-purple">
-                            <span class="placeholder-tag">Heideboerderij</span>
-                            <span class="placeholder-icon">🌾</span>
-                        </div>
-                        <div class="huisje-content">
-                            <h3>Heidehut Ruinen</h3>
-                            <p class="huisje-meta">📍 Drenthe | 👥 8 Pers. | 🛏️ 4 Slpk.</p>
-                            <p class="huisje-description">Ruime en sfeervolle boerderij gelegen aan de rand van het Nationaal Park Dwingelderveld. Perfect voor grotere gezelschappen.</p>
-                            <div class="huisje-footer">
-                                <span class="huisje-more-info">Meer informatie &rarr;</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Huisje 5 -->
-                    <div class="huisje-card"
-                         data-id="5"
-                         data-title="Wellness Lodge Vijlen"
-                         data-location="Limburg"
-                         data-guests="4"
-                         data-bedrooms="2"
-                         data-tag="Wellness"
-                         data-icon="🧖"
-                         data-class="img-wellness"
-                         data-short-description="Luxe lodge in het Limburgse heuvelland voorzien van een eigen jacuzzi, Finse sauna en een adembenemend uitzicht over de dalen."
-                         data-long-description="De Wellness Lodge in het Limburgse Vijlen biedt u een ongeëvenaard 5-sterren wellnessgevoel. Gelegen op een heuveltop geniet u vanuit de jacuzzi van een adembenemend, panoramisch uitzicht over de glooiende Limburgse dalen. Binnen treft u een Finse sauna, luxe regendouche en een modern design interieur."
-                         data-amenities="Buiten Jacuzzi, Traditionele Finse Sauna, Panoramisch Uitzicht, Luxe Regendouche, Airconditioning, Volledig Ingerichte Keuken, Design Gashaard, Sun Deck">
-                        <div class="huisje-image-placeholder img-wellness">
-                            <span class="placeholder-tag">Wellness</span>
-                            <span class="placeholder-icon">🧖</span>
-                        </div>
-                        <div class="huisje-content">
-                            <h3>Wellness Lodge Vijlen</h3>
-                            <p class="huisje-meta">📍 Limburg | 👥 4 Pers. | 🛏️ 2 Slpk.</p>
-                            <p class="huisje-description">Luxe lodge in het Limburgse heuvelland voorzien van een eigen jacuzzi, Finse sauna en een adembenemend uitzicht over de dalen.</p>
-                            <div class="huisje-footer">
-                                <span class="huisje-more-info">Meer informatie &rarr;</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Huisje 6 -->
-                    <div class="huisje-card"
-                         data-id="6"
-                         data-title="Appartement Strandzicht"
-                         data-location="Scheveningen"
-                         data-guests="2"
-                         data-bedrooms="1"
-                         data-tag="Appartement"
-                         data-icon="🏢"
-                         data-class="img-beach"
-                         data-short-description="Modern en licht appartement direct aan de boulevard met panoramisch uitzicht over de Noordzee. Geniet van de frisse zeewind."
-                         data-long-description="Appartement Strandzicht is een modern en buitengewoon licht appartement op de bovenste etage, direct gelegen aan de levendige boulevard van Scheveningen. Door de kamerhoge ramen en vanaf het ruime balkon heeft u een spectaculair panoramisch uitzicht over de Noordzee en het strand."
-                         data-amenities="Panoramisch Zeezicht, Ruim Balkon, Direct aan de Boulevard, Eigen Parkeerplaats, Lift Aanwezig, Vloerverwarming, High-speed Wi-Fi, Smart Home System">
-                        <div class="huisje-image-placeholder img-beach">
-                            <span class="placeholder-tag">Appartement</span>
-                            <span class="placeholder-icon">🏢</span>
-                        </div>
-                        <div class="huisje-content">
-                            <h3>Appartement Strandzicht</h3>
-                            <p class="huisje-meta">📍 Scheveningen | 👥 2 Pers. | 🛏️ 1 Slpk.</p>
-                            <p class="huisje-description">Modern en licht appartement direct aan de boulevard met panoramisch uitzicht over de Noordzee. Geniet van de frisse zeewind.</p>
-                            <div class="huisje-footer">
-                                <span class="huisje-more-info">Meer informatie &rarr;</span>
+                            <div class="huisje-content">
+                                <h3>{{ $house->name }}</h3>
+                                <p class="huisje-meta">📍 {{ $house->location }} | 👥 {{ $house->guests }} Pers. | 🛏️ {{ $house->bedrooms }} Slpk.</p>
+                                <p class="huisje-description">{{ $house->short_description }}</p>
+                                <div class="huisje-footer">
+                                    <span class="huisje-more-info">Meer informatie &rarr;</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,27 +116,44 @@
         <div class="modal-container">
             <button class="modal-close" aria-label="Sluit pop-up">&times;</button>
             <div class="modal-body-layout">
-                <!-- Left panel: Visual Header / Accent area -->
+                <div class="modal-header-section">
+                    <h2 class="modal-title"></h2>
+                    <p class="modal-meta"></p>
+                </div>
+                
+                <!-- Image / Visual Panel with Gallery -->
                 <div class="modal-visual-panel">
                     <span class="modal-visual-tag"></span>
                     <span class="modal-visual-icon"></span>
+                    
+                    <!-- Gallery Navigation -->
+                    <div class="modal-gallery-nav" style="display: none;">
+                        <button class="gallery-arrow gallery-prev" aria-label="Vorige foto">◀</button>
+                        <button class="gallery-arrow gallery-next" aria-label="Volgende foto">▶</button>
+                        <div class="gallery-counter"><span class="current-photo">1</span> / <span class="total-photos">1</span></div>
+                    </div>
                 </div>
-                <!-- Right panel: Rich Details -->
-                <div class="modal-details-panel">
-                    <h2 class="modal-title"></h2>
-                    <p class="modal-meta"></p>
-                    
-                    <div class="modal-divider"></div>
-                    
-                    <div class="modal-description-section">
-                        <h3>Over het huisje</h3>
-                        <p class="modal-long-description"></p>
-                    </div>
-                    
-                    <div class="modal-amenities-section">
-                        <h3>Voorzieningen & Details</h3>
-                        <ul class="modal-amenities-list"></ul>
-                    </div>
+                
+                <!-- Thumbnails -->
+                <div class="gallery-thumbnails" style="display: none;">
+                </div>
+                
+                <!-- Amenities / Voorzieningen -->
+                <div class="modal-amenities-section" style="margin-top: 15px;">
+                    <h3>Voorzieningen & Details</h3>
+                    <ul class="modal-amenities-list"></ul>
+                </div>
+
+                <!-- Description -->
+                <div class="modal-description-section" style="margin-top: 15px;">
+                    <h3>Beschrijving</h3>
+                    <p class="modal-long-description"></p>
+                </div>
+
+                <div class="modal-pdf-section" style="margin-top: 20px; display: none;">
+                    <a href="#" class="modal-pdf-button" target="_blank" style="display: inline-block; background: #2b6cb0; color: white; padding: 10px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+                        📄 PDF Openen
+                    </a>
                 </div>
             </div>
         </div>
@@ -275,6 +178,50 @@
         const longDescEl = modal.querySelector('.modal-long-description');
         const amenitiesList = modal.querySelector('.modal-amenities-list');
 
+        // Gallery elements
+        const galleryNav = modal.querySelector('.modal-gallery-nav');
+        const prevBtn = modal.querySelector('.gallery-prev');
+        const nextBtn = modal.querySelector('.gallery-next');
+        const currentPhotoSpan = modal.querySelector('.current-photo');
+        const totalPhotosSpan = modal.querySelector('.total-photos');
+        const thumbnailsContainer = modal.querySelector('.gallery-thumbnails');
+
+        let currentPhotoIndex = 0;
+        let photos = [];
+
+        const updateGallery = () => {
+            if (photos.length === 0) return;
+
+            // Update main image
+            visualPanel.style.backgroundImage = `url('${photos[currentPhotoIndex]}')`;
+            visualPanel.style.backgroundSize = 'cover';
+            visualPanel.style.backgroundPosition = 'center';
+            visualIcon.style.display = 'none';
+
+            // Update counter
+            currentPhotoSpan.textContent = currentPhotoIndex + 1;
+            totalPhotosSpan.textContent = photos.length;
+
+            // Update thumbnails highlight
+            document.querySelectorAll('.gallery-thumbnail').forEach((thumb, idx) => {
+                thumb.classList.toggle('active', idx === currentPhotoIndex);
+            });
+        };
+
+        const showNextPhoto = () => {
+            if (photos.length > 0) {
+                currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+                updateGallery();
+            }
+        };
+
+        const showPrevPhoto = () => {
+            if (photos.length > 0) {
+                currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+                updateGallery();
+            }
+        };
+
         const openModal = (card) => {
             // Extract data
             const title = card.getAttribute('data-title');
@@ -285,28 +232,101 @@
             const icon = card.getAttribute('data-icon');
             const themeClass = card.getAttribute('data-class');
             const longDesc = card.getAttribute('data-long-description');
-            const amenities = card.getAttribute('data-amenities').split(',').map(a => a.trim());
+            const image = card.getAttribute('data-image');
+            const pdf = card.getAttribute('data-pdf');
+            const photosJson = card.getAttribute('data-photos');
+            
+            // Parse photos from JSON
+            try {
+                photos = photosJson ? JSON.parse(photosJson) : [];
+            } catch (e) {
+                photos = [];
+            }
 
-            // Populate modal data
+            // Add primary image if it exists
+            if (image && !photos.includes(image)) {
+                photos.unshift(image);
+            }
+
+            currentPhotoIndex = 0;
+            
+            // Safe split mapping if amenities string exists
+            const rawAmenities = card.getAttribute('data-amenities');
+            const amenities = rawAmenities ? rawAmenities.split(',').map(a => a.trim()) : [];
+
             titleEl.textContent = title;
             metaEl.innerHTML = `📍 ${location} &nbsp;&bull;&nbsp; 👥 ${guests} Pers. &nbsp;&bull;&nbsp; 🛏️ ${bedrooms} Slpk.`;
             longDescEl.textContent = longDesc;
             
             // Reset classes and add current theme class
             visualPanel.className = 'modal-visual-panel';
-            visualPanel.classList.add(themeClass);
             visualIcon.textContent = icon;
             visualTag.textContent = tag;
 
-            // Render amenities list
+            // Show/hide gallery navigation
+            if (photos.length > 1) {
+                galleryNav.style.display = 'block';
+                updateGallery();
+            } else if (photos.length === 1) {
+                galleryNav.style.display = 'none';
+                visualPanel.style.backgroundImage = `url('${photos[0]}')`;
+                visualPanel.style.backgroundSize = 'cover';
+                visualPanel.style.backgroundPosition = 'center';
+                visualIcon.style.display = 'none';
+            } else {
+                galleryNav.style.display = 'none';
+                visualPanel.style.backgroundImage = '';
+                visualIcon.style.display = 'block';
+                if(themeClass) {
+                    visualPanel.classList.add(themeClass);
+                }
+            }
+
+            // Create thumbnails
+            thumbnailsContainer.innerHTML = '';
+            if (photos.length > 1) {
+                thumbnailsContainer.style.display = 'flex';
+                photos.forEach((photoUrl, idx) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = photoUrl;
+                    thumb.alt = `Foto ${idx + 1}`;
+                    thumb.className = 'gallery-thumbnail' + (idx === 0 ? ' active' : '');
+                    thumb.style.width = '60px';
+                    thumb.style.height = '60px';
+                    thumb.style.objectFit = 'cover';
+                    thumb.style.borderRadius = '4px';
+                    thumb.style.cursor = 'pointer';
+                    thumb.style.border = '2px solid transparent';
+                    thumb.style.transition = 'border-color 0.3s';
+                    thumb.addEventListener('click', () => {
+                        currentPhotoIndex = idx;
+                        updateGallery();
+                    });
+                    thumbnailsContainer.appendChild(thumb);
+                });
+            } else {
+                thumbnailsContainer.style.display = 'none';
+            }
+
             amenitiesList.innerHTML = '';
             amenities.forEach(amenity => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span class="amenity-bullet">✓</span> ${amenity}`;
-                amenitiesList.appendChild(li);
+                if(amenity) {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="amenity-bullet">✓</span> ${amenity}`;
+                    amenitiesList.appendChild(li);
+                }
             });
 
-            // Open modal with smooth transition
+            // Handle PDF button
+            const pdfSection = modal.querySelector('.modal-pdf-section');
+            const pdfButton = modal.querySelector('.modal-pdf-button');
+            if (pdf) {
+                pdfButton.href = pdf;
+                pdfSection.style.display = 'block';
+            } else {
+                pdfSection.style.display = 'none';
+            }
+
             modal.classList.add('active');
             document.body.style.overflow = 'hidden'; // prevent background scrolling
             modal.setAttribute('aria-hidden', 'false');
@@ -321,7 +341,18 @@
             modal.setAttribute('aria-hidden', 'true');
         };
 
-        // Attach click events to cottage cards
+        // Gallery button listeners
+        nextBtn.addEventListener('click', showNextPhoto);
+        prevBtn.addEventListener('click', showPrevPhoto);
+
+        // Keyboard navigation for gallery
+        document.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('active')) {
+                if (e.key === 'ArrowRight') showNextPhoto();
+                if (e.key === 'ArrowLeft') showPrevPhoto();
+            }
+        });
+
         cards.forEach(card => {
             card.addEventListener('click', () => openModal(card));
             
