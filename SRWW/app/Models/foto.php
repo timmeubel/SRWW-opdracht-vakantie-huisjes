@@ -12,5 +12,12 @@ class Foto extends Model
     
     protected $fillable = [
         'url',
+        'vacation_house_id',
+        'sort_order',
     ];
+
+    public function vacationHouse()
+    {
+        return $this->belongsTo(VacationHouse::class, 'vacation_house_id');
+    }
 }
