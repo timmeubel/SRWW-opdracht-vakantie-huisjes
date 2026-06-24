@@ -7,6 +7,8 @@ use App\Http\Controllers\loginController;
 use App\Http\Controllers\LotingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CrudUserController;
+
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/loting', function () {
@@ -46,4 +48,8 @@ Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::put('/house/{id}', [CMSController::class, 'updateHouse'])->name('house.update');
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
+});
+Route::prefix('admin')->group(function () {
+    Route::resource('usercrud', CrudUserController::class);
+    Route::get('/admin/usercrud', [CrudUserController::class, 'index']);
 });
