@@ -13,14 +13,14 @@
             </div>
         </section>
         <section class="grid-admin">
-            <div>
-                <h2>USERS CRUD</h2>
-                 @auth
-                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
+           <div>
+            <h2>gebruikers</h2>
+            @auth
+                    <a href="{{ route('admin.users.index') }}" class="admin-button">⚙️ Naar CRUD USERS</a>
                 @else
-                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
+                    <a href="{{ route('admin.users.index') }}" class="admin-button">⚙️ Naar CRUD USERS</a>
                 @endauth
-            </div>
+        </div>
             <div>
                 <h2>Huisjesbeheer</h2>
                 @auth
@@ -29,6 +29,7 @@
                     <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
                 @endauth
         </div>
+        
         </section>
     </main>
 @endsection

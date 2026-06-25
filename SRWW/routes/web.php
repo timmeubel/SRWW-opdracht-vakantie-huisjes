@@ -7,8 +7,7 @@ use App\Http\Controllers\loginController;
 use App\Http\Controllers\LotingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CrudUserController;
-
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/loting', function () {
@@ -55,7 +54,20 @@ Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
 });
-Route::prefix('admin')->group(function () {
-    Route::resource('usercrud', CrudUserController::class);
-    Route::get('/admin/usercrud', [CrudUserController::class, 'index']);
-});
+
+// Route om de tabel met alle gebruikers te zien (Read)
+Route::get('/gebruikers', [UserController::class, 'index'])->name('users.index');
+
+// Route om het bewerkscherm te openen (Update - pagina)
+Route::get('/gebruikers/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+// Route om de bewerkte gegevens op te slaan (Update - actie)
+Route::put('/gebruikers/{user}', [UserController::class, 'update'])->name('users.update');
+
+// Route om de admin-rol om te draaien (Update - admin actie)
+Route::patch('/gebruikers/{user}/toggle-admin', [UserController::class, 'toggleAdmin'])->name('users.toggleAdmin');
+
+// Route om een gebruiker te verwijderen (Delete)
+Route::delete('/gebruikers/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::get('/gebruikers', [UserController::class, 'index'])->name('users.index');
