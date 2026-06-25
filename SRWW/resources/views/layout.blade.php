@@ -14,11 +14,11 @@
             <div class="nav-spacer"></div>
             <ul class="nav-links">
                 @auth
-                    <li><a href="/account">account</a></li>
+                    <li><a href="/account" class="{{ request()->is('account') ? 'active' : '' }}">Account</a></li>
                 @endauth
                 <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
                 <li><a href="/#huisjes">Huisjes</a></li>
-                <li><a href="/loting" class="{{ request()->is('loting') ? 'active' : '' }}">Inschrijving</a></li>
+                <li><a href="/loting" class="{{ request()->is('loting') ? 'active' : '' }}">Loting</a></li>
             </ul>
             <div class="nav-login">
                 @auth

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VacationHouse;
 
 class Inschrijving extends Model
 {
@@ -34,5 +35,27 @@ class Inschrijving extends Model
     public function inschrijfronde()
     {
         return $this->belongsTo(Inschrijfronde::class);
+    }
+
+    public function getHuisjeAttribute()
+    {
+        $house = VacationHouse::where('name', $this->voorkeur_1)->first();
+        if ($house) {
+            return (object)[
+                'naam' => $house->name,
+                'name' => $house->name,
+            ];
+        }
+        return null;
+    }
+
+    public function getStartdatumAttribute()
+    {
+        return $this->week_voorkeur_start;
+    }
+
+    public function getEinddatumAttribute()
+    {
+        return $this->week_voorkeur_eind;
     }
 }
