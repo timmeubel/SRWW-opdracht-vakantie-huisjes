@@ -27,6 +27,12 @@ Route::post('/loting', [LotingController::class, 'store']);
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
 
+Route::get('/verify-email/notice', function () {
+    return view('verify-email');
+})->name('verify.notice');
+
+Route::get('/verify-email/{token}', [RegisterController::class, 'verifyEmail'])->name('verify.email');
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');
@@ -43,7 +49,8 @@ Route::get('/debug-db', function () {
     ]);
 });
 
-Route::get('/admin', [adminController::class, 'admin'])->name('admin');;
+Route::get('/admin', [adminController::class, 'admin'])->name('admin');
+Route::get('/admin/export-inschrijvingen', [adminController::class, 'exportInschrijvingen'])->name('admin.export.inschrijvingen');
 
 Route::get('/admin/loting', [\App\Http\Controllers\AdminLotingController::class, 'index'])->name('admin.loting.index');
 
@@ -57,6 +64,7 @@ Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::post('/settings', [CMSController::class, 'updateSettings'])->name('settings.update');
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
 });
+
 Route::prefix('admin')->group(function () {
     Route::resource('usercrud', CrudUserController::class);
     Route::get('/admin/usercrud', [CrudUserController::class, 'index']);

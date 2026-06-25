@@ -17,6 +17,14 @@ class loginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            // Check if email is verified
+            if (Auth::user()->email_verified_at === null) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Je moet je e-mailadres verifiëren voordat je kunt inloggen.',
+                ])->onlyInput('email');
+            }
+            
             $request->session()->regenerate();
 
             // Check of gebruiker admin is via rol_id (Stel: 1 is admin)
