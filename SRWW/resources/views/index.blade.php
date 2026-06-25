@@ -1,62 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vakantie Huisjes</title>
-    <link rel="stylesheet" href="{{ asset('css/variables.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <div class="nav-spacer"></div>
-            <ul class="nav-links">
-                <li><a href="/" class="active">Home</a></li>
-                <li><a href="#huisjes">Huisjes</a></li>
-                <li><a href="#">Informatie</a></li>
-                <li><a href="/loting">Loting</a></li>
-                <li><a href="/account">Account</a></li>
-            </ul>
-            <div class="nav-login">
-                <a href="#">Login</a>
-            </div>
-        </nav>
-    </header>
+@extends('layout')
+
+@section('content')
     <main class="main-content">
         <!-- Hero / Informatie Section -->
         <section class="info-section">
             <div class="section-container">
-                <h1>🏠 Welkom bij de SRWW</h1>
-                <p class="lead-text">Hier kunt u als lid van de personeelsvereniging mee doen met de lotingen voor de huisjes die wij beschikbaar hebben door het jaar. En kunt u wat meer informatie over de verschillende huisjes vinden.</p>
+                {{-- Fallbacks are added using ?? so the site won't break if the database settings are empty --}}
+                <h1>{{ $settings['welcome_title'] ?? '🏠 Welkom bij de SRWW' }}</h1>
+                <p class="lead-text">{{ $settings['welcome_text'] ?? 'Hier kunt u als lid van de personeelsvereniging mee doen met de lotingen voor de huisjes die wij beschikbaar hebben door het jaar. En kunt u wat meer informatie over de verschillende huisjes vinden.' }}</p>
                 
                 <div class="info-features">
                     <div class="feature-card">
-                        <span class="feature-icon">🌲</span>
-                        <h3>Prachtige Locaties</h3>
-                        <p>Al onze huisjes bevinden zich op unieke plekken, midden in de natuur of dicht bij populaire bezienswaardigheden.</p>
+                        <span class="feature-icon">{{ $settings['feature_1_icon'] ?? '🌲' }}</span>
+                        <h3>{{ $settings['feature_1_title'] ?? 'Prachtige Locaties' }}</h3>
+                        <p>{{ $settings['feature_1_text'] ?? 'Al onze huisjes bevinden zich op unieke plekken, midden in de natuur of dicht bij populaire bezienswaardigheden.' }}</p>
                     </div>
                     <div class="feature-card">
-                        <span class="feature-icon">✨</span>
-                        <h3>Luxe & Comfort</h3>
-                        <p>Geniet van moderne voorzieningen, comfortabele bedden, gratis Wi-Fi en een volledig uitgeruste keuken.</p>
+                        <span class="feature-icon">{{ $settings['feature_2_icon'] ?? '✨' }}</span>
+                        <h3>{{ $settings['feature_2_title'] ?? 'Luxe & Comfort' }}</h3>
+                        <p>{{ $settings['feature_2_text'] ?? 'Geniet van moderne voorzieningen, comfortabele bedden, gratis Wi-Fi en een volledig uitgeruste keuken.' }}</p>
                     </div>
                     <div class="feature-card">
-                        <span class="feature-icon">🛎️</span>
-                        <h3>Uitstekende Service</h3>
-                        <p>Onze gastvrijheid staat voorop. We staan altijd voor u klaar om uw verblijf onvergetelijk te maken.</p>
+                        <span class="feature-icon">{{ $settings['feature_3_icon'] ?? '🛎️' }}</span>
+                        <h3>{{ $settings['feature_3_title'] ?? 'Uitstekende Service' }}</h3>
+                        <p>{{ $settings['feature_3_text'] ?? 'Onze gastvrijheid staat voorop. We staan altijd voor u klaar om uw verblijf onvergetelijk te maken.' }}</p>
                     </div>
                 </div>
                 
-                <a href="#huisjes" class="cta-button">Bekijk Onze Huisjes</a>
+                <a href="#huisjes" class="cta-button">{{ $settings['cta_text'] ?? 'Bekijk Onze Huisjes' }}</a>
             </div>
         </section>
 
         <!-- Huisjes Section -->
         <section id="huisjes" class="huisjes-section">
             <div class="section-container">
-                <h2>Onze Vakantiehuisjes</h2>
-                <p class="section-subtitle">Kies uit ons exclusieve aanbod van vakantiewoningen</p>
+                <h2>{{ $settings['houses_section_title'] ?? 'Onze Vakantiehuisjes' }}</h2>
+                <p class="section-subtitle">{{ $settings['houses_section_subtitle'] ?? 'Kies uit ons exclusieve aanbod van vakantiewoningen' }}</p>
                 
                 <div class="huisjes-grid">
                     @foreach($houses as $house)
@@ -158,18 +137,15 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <footer>
-        <p>&copy; 2026 Vakantie Huisjes. Alle rechten voorbehouden.</p>
-    </footer>
-
+@section('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('huisje-modal');
         const closeBtn = modal.querySelector('.modal-close');
         const cards = document.querySelectorAll('.huisje-card');
 
-        // Modal elements to populate
         const visualPanel = modal.querySelector('.modal-visual-panel');
         const visualIcon = modal.querySelector('.modal-visual-icon');
         const visualTag = modal.querySelector('.modal-visual-tag');
@@ -223,7 +199,6 @@
         };
 
         const openModal = (card) => {
-            // Extract data
             const title = card.getAttribute('data-title');
             const location = card.getAttribute('data-location');
             const guests = card.getAttribute('data-guests');
@@ -258,7 +233,6 @@
             metaEl.innerHTML = `📍 ${location} &nbsp;&bull;&nbsp; 👥 ${guests} Pers. &nbsp;&bull;&nbsp; 🛏️ ${bedrooms} Slpk.`;
             longDescEl.textContent = longDesc;
             
-            // Reset classes and add current theme class
             visualPanel.className = 'modal-visual-panel';
             visualIcon.textContent = icon;
             visualTag.textContent = tag;
@@ -328,16 +302,14 @@
             }
 
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // prevent background scrolling
+            document.body.style.overflow = 'hidden';
             modal.setAttribute('aria-hidden', 'false');
-            
-            // Focus close button for accessibility
             closeBtn.focus();
         };
 
         const closeModal = () => {
             modal.classList.remove('active');
-            document.body.style.overflow = ''; // restore scrolling
+            document.body.style.overflow = '';
             modal.setAttribute('aria-hidden', 'true');
         };
 
@@ -355,8 +327,6 @@
 
         cards.forEach(card => {
             card.addEventListener('click', () => openModal(card));
-            
-            // Key listener for interactive accessibility
             card.setAttribute('tabindex', '0');
             card.setAttribute('role', 'button');
             card.setAttribute('aria-label', `Bekijk details voor ${card.getAttribute('data-title')}`);
@@ -368,23 +338,11 @@
             });
         });
 
-        // Close on click close button
         closeBtn.addEventListener('click', closeModal);
-
-        // Close on backdrop click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Close on Escape key
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
         });
     });
     </script>
-</body>
-</html>
+@endsection

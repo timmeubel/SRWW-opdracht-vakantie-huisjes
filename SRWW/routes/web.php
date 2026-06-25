@@ -15,13 +15,6 @@ Route::get('/loting', function () {
     $houses = \App\Models\VacationHouse::all();
     return view('loting', ['houses' => $houses]);
 });
-Route::get('/account', function () {
-    return view('account', [
-        'activeInschrijving' => auth()->check()
-            ? \App\Models\Inschrijving::where('user_id', auth()->id())->latest()->first()
-            : null,
-    ]);
-})->name('account');
 Route::post('/loting', [LotingController::class, 'store']);
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
