@@ -15,26 +15,18 @@
         <section class="grid-admin">
             <div>
                 <h2>Loting</h2>
-                @auth
-                    @if(Auth::user()->is_admin)
-                        <a href="{{ route('admin.export.inschrijvingen') }}" class="admin-button">📊 Export Inschrijvingen</a>
-                    @endif
-                <h2>USERS CRUD</h2>
-                 @auth
-                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
-                @else
-                    <a href="{{ route('users.index') }}" class="admin-button">⚙️ Naar CRUD USERS</a>
-                @endauth
-        </div>
+                @if(Auth::user()->is_admin)
+                    <a href="{{ route('admin.export.inschrijvingen') }}" class="admin-button">📊 Export Inschrijvingen</a>
+                @endif
+            </div>
+            <div>
+                <h2>Gebruikers</h2>
+                <a href="{{ route('users.index') }}" class="admin-button">⚙️ Naar CRUD USERS</a>
+            </div>
             <div>
                 <h2>Huisjesbeheer</h2>
-                @auth
-                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
-                @else
-                    <a href="{{ route('admin.cms.index') }}" class="admin-button">⚙️ Naar CMS</a>
-                @endauth
-        </div>
-        
+                <a href="{{ route('admin.cms.home') }}" class="admin-button">⚙️ Naar CMS</a>
+            </div>
         </section>
     </main>
 @endsection

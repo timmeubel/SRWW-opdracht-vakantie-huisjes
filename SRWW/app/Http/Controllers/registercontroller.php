@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use App\Mail\VerifyEmailMail;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -18,15 +18,14 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-     
         $request->validate([
-        'name' => 'required',
-        'email' => 'required|email|unique:user,email',
-        'password' => 'required|min:6'
-        ],[
-        'email.unique' => 'Deze email is al in gebruik'
-         ]);
-    
+            'name' => 'required',
+            'email' => 'required|email|unique:user,email',
+            'password' => 'required|min:6'
+        ], [
+            'email.unique' => 'Deze email is al in gebruik'
+        ]);
+
         // Generate verification token
         $verificationToken = Str::random(60);
 
@@ -34,18 +33,19 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'verification_token' => $verificationToken
-            'rol_id'=> $request->rol_id,
+            'verification_token' => $verificationToken,
+            'is_admin' => false,
+            'email_verified_at' => now(), // auto-verify since MAIL_MAILER=log
         ]);
-        
-        // Create verification URL
+
+        // Create verification URL (logged for reference)
         $verificationUrl = route('verify.email', ['token' => $verificationToken]);
-        
-        // Send verification email
-        Mail::send(new VerifyEmailMail($verificationUrl, $request->name));
-        
-        // Redirect to verification page
-        return redirect()->route('verify.notice')->with('email', $request->email);
+
+        // Send verification email (goes to storage/logs/laravel.log)
+        Mail::send(new VerifyEmailMail($verificationUrl, $request->name, $request->email));
+
+        // Redirect to login with success message
+        return redirect()->route('login')->with('success', 'Account aangemaakt! Je kunt nu inloggen.');
     }
 
     public function verifyEmail($token)

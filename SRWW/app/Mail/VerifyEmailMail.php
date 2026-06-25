@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 class VerifyEmailMail extends Mailable
@@ -15,14 +16,16 @@ class VerifyEmailMail extends Mailable
 
     public $verificationUrl;
     public $userName;
+    public $userEmail;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($verificationUrl, $userName)
+    public function __construct($verificationUrl, $userName, $userEmail)
     {
         $this->verificationUrl = $verificationUrl;
         $this->userName = $userName;
+        $this->userEmail = $userEmail;
     }
 
     /**
@@ -31,6 +34,7 @@ class VerifyEmailMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: [new Address($this->userEmail, $this->userName)],
             subject: 'Verifieer je e-mailadres',
         );
     }

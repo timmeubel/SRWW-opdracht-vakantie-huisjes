@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class adminController extends Controller
 {
-    public function index()
+    public function admin()
     {
         return view('admin.admin');
     }

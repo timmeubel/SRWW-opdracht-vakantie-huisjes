@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +25,8 @@ class User extends Authenticatable
         'email',
         'password',
         'verification_token',
+        'rol_id',
+        'email_verified_at',
         'is_admin',
     ];
 

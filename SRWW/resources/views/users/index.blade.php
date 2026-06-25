@@ -65,8 +65,5 @@
             </tbody>
         </table>
     </div>
-    <a href="{{ url('/admin') }}" class="btn-admin">
-    Ga naar Admin Panel
-</a>
 </body>
 </html>

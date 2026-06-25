@@ -105,6 +105,12 @@ body.auth-page {
     color: #075985;
 }
 
+.alert-success {
+    background-color: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+}
+
 .alert-icon {
     width: 20px;
     height: 20px;
