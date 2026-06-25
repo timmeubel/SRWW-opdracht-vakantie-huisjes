@@ -19,8 +19,14 @@ class VacationHouse extends Model
         'long_description',
         'amenities',
         'image_path',
+        'pdf_path',
         'tag',
         'icon',
         'class_theme',
     ];
+
+    public function fotos()
+    {
+        return $this->hasMany(Foto::class, 'vacation_house_id')->orderBy('sort_order');
+    }
 }

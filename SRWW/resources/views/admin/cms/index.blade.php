@@ -17,6 +17,17 @@
         </div>
     @endif
 
+    {{-- Foutmeldingen Alert --}}
+    @if($errors->any())
+        <div class="alert-danger" style="background: #fed7d7; border: 1px solid #f5c6cb; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="cms-navigation">
         <label for="cmsSectionSelect" class="cms-nav-label">Kies wat u wilt beheren:</label>
         <select id="cmsSectionSelect" class="cms-dropdown">
@@ -115,7 +126,76 @@
                             @endif
                         </div>
 
+                        <div class="image-upload-box">
+                            <label style="display:block; font-weight:bold; margin-bottom: 5px; font-size: 0.9rem;">�️ Galerij Foto's Toevoegen (Meerdere Foto's)</label>
+                            <input type="file" name="gallery_photos[]" accept="image/*" multiple>
+                            <p style="font-size: 0.75rem; color: #718096; margin-top: 5px;">Je kan meerdere foto's selecteren die in de galerij zullen verschijnen.</p>
+                            @if($house->fotos && $house->fotos->count() > 0)
+                                <div style="margin-top: 10px;">
+                                    <span style="font-size: 0.8rem; display:block; margin-bottom:5px;"><strong>Huidge galerij foto's:</strong></span>
+                                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                        @foreach($house->fotos as $foto)
+                                            <div style="position: relative; display: inline-block;">
+                                                <img src="{{ asset('storage/' . $foto->url) }}" style="height: 60px; width: 60px; object-fit: cover; border-radius:4px; border: 1px solid #cbd5e0;">
+                                                <button type="button" class="btn-delete-foto" data-id="{{ $foto->id }}" style="position: absolute; top: -8px; right: -8px; background: #e53e3e; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; padding: 0; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">×</button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="image-upload-box">
+                            <label style="display:block; font-weight:bold; margin-bottom: 5px; font-size: 0.9rem;">�📄 Huisje PDF Wijzigen</label>
+                            <input type="file" name="pdf" accept="application/pdf">
+                            @if($house->pdf_path)
+                                <div style="margin-top: 10px;">
+                                    <span style="font-size: 0.8rem; display:block; margin-bottom:3px;">Huidsige live PDF:</span>
+                                    <a href="{{ asset('storage/' . $house->pdf_path) }}" target="_blank" style="color: #2b6cb0; text-decoration: underline; font-size: 0.85rem;">
+                                        📎 Download huisje PDF
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+
                         <button type="submit" class="btn-submit-green">Huisje {{ $house->id }} Bijwerken</button>
+                    </form>
+
+                    {{-- Delete photo form (separate from update form, posts to /admin/cms/delete-image) --}}
+                    @if($house->image_path)
+                        <form action="{{ route('admin.cms.house.image.delete') }}" method="POST"
+                              style="margin-top: 10px;"
+                              onsubmit="return confirm('Weet u zeker dat u de foto wilt verwijderen?')">
+                            @csrf
+                            <input type="hidden" name="house_id" value="{{ $house->id }}">
+                            <button type="submit" style="background:#e53e3e; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:0.85rem; cursor:pointer;">
+                                🗑️ Foto Verwijderen
+                            </button>
+                        </form>
+                    @endif
+
+                    {{-- Delete PDF form --}}
+                    @if($house->pdf_path)
+                        <form action="{{ route('admin.cms.house.pdf.delete') }}" method="POST"
+                              style="margin-top: 10px;"
+                              onsubmit="return confirm('Weet u zeker dat u de PDF wilt verwijderen?')">
+                            @csrf
+                            <input type="hidden" name="house_id" value="{{ $house->id }}">
+                            <button type="submit" style="background:#e53e3e; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:0.85rem; cursor:pointer;">
+                                🗑️ PDF Verwijderen
+                            </button>
+                        </form>
+                    @endif
+
+                    {{-- Delete entire house form --}}
+                    <form action="{{ route('admin.cms.house.delete') }}" method="POST"
+                          style="margin-top: 15px; border-top: 1px solid #fed7d7; padding-top: 15px;"
+                          onsubmit="return confirm('⚠️ Weet u zeker dat u huisje #{{ $house->id }} ({{ $house->name }}) permanent wilt verwijderen? Dit kan niet ongedaan worden gemaakt!')">
+                        @csrf
+                        <input type="hidden" name="house_id" value="{{ $house->id }}">
+                        <button type="submit" style="background:#742a2a; color:#fff; border:none; padding:8px 18px; border-radius:4px; font-size:0.85rem; cursor:pointer; font-weight:bold;">
+                            🗑️ Volledig Huisje Verwijderen
+                        </button>
                     </form>
                 </div>
             @endforeach
@@ -162,13 +242,27 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
-                <label>📷 Foto Selecteren</label>
+                <label>📷 Hoofdfoto Selecteren</label>
                 <input type="file" name="image" accept="image/*">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>🖼️ Galerij Foto's Toevoegen (Meerdere Foto's)</label>
+                <input type="file" name="gallery_photos[]" accept="image/*" multiple>
+                <p style="font-size: 0.75rem; color: #718096; margin-top: 5px;">Selecteer één of meerdere foto's voor de fotogalerij van dit huisje.</p>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label>📄 PDF Selecteren (Optioneel)</label>
+                <input type="file" name="pdf" accept="application/pdf">
             </div>
 
             <button type="submit" class="btn-submit-orange">Huisje Opslaan en Aanmaken</button>
         </form>
-    </div>
+    <form id="delete-foto-form" action="{{ route('admin.cms.house.gallery.delete') }}" method="POST" style="display: none;">
+        @csrf
+        <input type="hidden" name="foto_id" id="delete-foto-id">
+    </form>
 
 </div>
 
@@ -190,6 +284,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeSection) {
             activeSection.classList.add('active');
         }
+    });
+
+    // Delete gallery photo JS handler to avoid nested forms
+    document.querySelectorAll('.btn-delete-foto').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Weet u zeker dat u deze foto uit de galerij wilt verwijderen?')) {
+                const fotoId = this.getAttribute('data-id');
+                document.getElementById('delete-foto-id').value = fotoId;
+                document.getElementById('delete-foto-form').submit();
+            }
+        });
     });
 });
 </script>

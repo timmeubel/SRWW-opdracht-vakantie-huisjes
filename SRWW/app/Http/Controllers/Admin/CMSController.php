@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Models\VacationHouse;
+use App\Models\Foto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +25,13 @@ class CMSController extends Controller
     {
         $house = VacationHouse::findOrFail($id);
 
+        \Illuminate\Support\Facades\Log::debug('updateHouse files check', [
+            'has_gallery_photos' => $request->hasFile('gallery_photos'),
+            'gallery_photos_file' => $request->file('gallery_photos'),
+            'all_files' => $request->allFiles(),
+            'all_data' => $request->except(['gallery_photos', 'image']),
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -32,7 +40,10 @@ class CMSController extends Controller
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'amenities' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20480',
+            'pdf' => 'nullable|mimes:pdf|max:10240',
+            'gallery_photos' => 'nullable|array',
+            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:20480'
         ]);
 
         $house->name = $request->name;
@@ -48,7 +59,31 @@ class CMSController extends Controller
             $house->image_path = $request->file('image')->store('houses', 'public');
         }
 
+        // Handle PDF Upload
+        if ($request->hasFile('pdf')) {
+            // Delete old PDF if exists
+            if ($house->pdf_path) {
+                Storage::disk('public')->delete($house->pdf_path);
+            }
+            $house->pdf_path = $request->file('pdf')->store('house-pdfs', 'public');
+        }
+
         $house->save();
+
+        // Handle Gallery Photos Upload
+        if ($request->hasFile('gallery_photos')) {
+            $maxOrder = $house->fotos()->max('sort_order') ?? 0;
+            
+            foreach ($request->file('gallery_photos') as $index => $photo) {
+                $path = $photo->store('gallery', 'public');
+                Foto::create([
+                    'vacation_house_id' => $house->id,
+                    'url' => $path,
+                    'sort_order' => $maxOrder + $index + 1
+                ]);
+            }
+        }
+
         return redirect()->back()->with('success', 'Vakantiehuisje succesvol bijgewerkt!');
     }
 
@@ -71,6 +106,13 @@ class CMSController extends Controller
 
     public function storeHouse(Request $request)
     {
+        \Illuminate\Support\Facades\Log::debug('storeHouse files check', [
+            'has_gallery_photos' => $request->hasFile('gallery_photos'),
+            'gallery_photos_file' => $request->file('gallery_photos'),
+            'all_files' => $request->allFiles(),
+            'all_data' => $request->except(['gallery_photos', 'image']),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -79,18 +121,107 @@ class CMSController extends Controller
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'amenities' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:20480',
+            'pdf' => 'nullable|mimes:pdf|max:10240',
+            'gallery_photos' => 'nullable|array',
+            'gallery_photos.*' => 'image|mimes:jpeg,png,jpg,webp|max:20480'
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('houses', 'public');
         }
 
-        $validated['tag'] = 'Vakantiehuis';
-        $validated['icon'] = '🏡';
-        $validated['class_theme'] = 'img-forest';
+        if ($request->hasFile('pdf')) {
+            $validated['pdf_path'] = $request->file('pdf')->store('house-pdfs', 'public');
+        }
 
-        \App\Models\VacationHouse::create($validated);
+        $houseData = \Illuminate\Support\Arr::except($validated, ['gallery_photos', 'image']);
+        $houseData['tag'] = 'Vakantiehuis';
+        $houseData['icon'] = '🏡';
+        $houseData['class_theme'] = 'img-forest';
+
+        $house = \App\Models\VacationHouse::create($houseData);
+
+        // Handle Gallery Photos Upload
+        if ($request->hasFile('gallery_photos')) {
+            foreach ($request->file('gallery_photos') as $index => $photo) {
+                $path = $photo->store('gallery', 'public');
+                Foto::create([
+                    'vacation_house_id' => $house->id,
+                    'url' => $path,
+                    'sort_order' => $index + 1
+                ]);
+            }
+        }
 
         return redirect()->back()->with('success', 'Nieuw vakantiehuisje succesvol toegevoegd!');
+    }
+
+    // Delete the photo of a specific house
+    public function deleteHouseImage(Request $request)
+    {
+        $house = VacationHouse::findOrFail($request->input('house_id'));
+
+        if ($house->image_path) {
+            Storage::disk('public')->delete($house->image_path);
+            $house->image_path = null;
+            $house->save();
+        }
+
+        return redirect()->route('admin.cms.index')->with('success', 'Foto van het huisje succesvol verwijderd!');
+    }
+
+    // Delete the PDF of a specific house
+    public function deleteHousePdf(Request $request)
+    {
+        $house = VacationHouse::findOrFail($request->input('house_id'));
+
+        if ($house->pdf_path) {
+            Storage::disk('public')->delete($house->pdf_path);
+            $house->pdf_path = null;
+            $house->save();
+        }
+
+        return redirect()->route('admin.cms.index')->with('success', 'PDF van het huisje succesvol verwijderd!');
+    }
+
+    // Delete an entire house (including its photo from storage)
+    public function deleteHouse(Request $request)
+    {
+        $house = VacationHouse::findOrFail($request->input('house_id'));
+
+        // Also remove the image file from disk if it exists
+        if ($house->image_path) {
+            Storage::disk('public')->delete($house->image_path);
+        }
+
+        // Also remove the PDF file from disk if it exists
+        if ($house->pdf_path) {
+            Storage::disk('public')->delete($house->pdf_path);
+        }
+
+        // Delete all gallery photos
+        foreach ($house->fotos as $foto) {
+            Storage::disk('public')->delete($foto->url);
+            $foto->delete();
+        }
+
+        $house->delete();
+
+        return redirect()->route('admin.cms.index')->with('success', 'Vakantiehuisje succesvol verwijderd!');
+    }
+
+    // Delete a single gallery photo
+    public function deleteGalleryPhoto(Request $request)
+    {
+        $foto = Foto::findOrFail($request->input('foto_id'));
+        
+        if ($foto->url) {
+            Storage::disk('public')->delete($foto->url);
+        }
+
+        $foto->delete();
+
+        return redirect()->back()->with('success', 'Galerij foto succesvol verwijderd!');
     }
 }

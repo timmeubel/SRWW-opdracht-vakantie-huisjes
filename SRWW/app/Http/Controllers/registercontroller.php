@@ -35,6 +35,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'verification_token' => $verificationToken
+            'rol_id'=> $request->rol_id,
         ]);
         
         // Create verification URL
