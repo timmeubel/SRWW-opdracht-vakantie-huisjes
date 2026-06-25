@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\CMSController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\LotingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/loting', function () {
@@ -71,3 +71,8 @@ Route::patch('/gebruikers/{user}/toggle-admin', [UserController::class, 'toggleA
 Route::delete('/gebruikers/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::get('/gebruikers', [UserController::class, 'index'])->name('users.index');
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserController::class);
+    // This automatically creates 'admin.users.index'
+});
