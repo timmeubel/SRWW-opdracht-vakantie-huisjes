@@ -18,13 +18,6 @@ Route::get('/loting', function () {
     $houses = \App\Models\VacationHouse::all();
     return view('loting', ['houses' => $houses]);
 });
-Route::get('/account', function () {
-    return view('account', [
-        'activeInschrijving' => auth()->check()
-            ? \App\Models\Inschrijving::where('user_id', auth()->id())->latest()->first()
-            : null,
-    ]);
-})->name('account');
 Route::post('/loting', [LotingController::class, 'store']);
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -42,6 +35,11 @@ Route::get('/login', function () {
 Route::post('/login', [loginController::class, 'login'])->name('login.store');
 Route::get('/logout', [loginController::class, 'logout'])->name('logout');
 Route::get('/uitloggen', [loginController::class, 'logout'])->name('uitloggen');
+
+Route::get('/account', function () {
+    $activeInschrijving = \App\Models\Inschrijving::where('email', auth()->user()->email)->first();
+    return view('account', compact('activeInschrijving'));
+})->name('account')->middleware('auth');
 
 // Temporary route to inspect database content
 Route::get('/debug-db', function () {

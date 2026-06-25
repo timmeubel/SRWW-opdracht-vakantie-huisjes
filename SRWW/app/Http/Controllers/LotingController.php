@@ -45,6 +45,7 @@ class LotingController extends Controller
 
         Inschrijving::create([
             'naam'                => $request->personeelslidnummer,
+            'email'               => auth()->user()?->email,
             'voorkeur_1'          => $request->huisje_1,
             'voorkeur_2'          => $request->huisje_2,
             'voorkeur_3'          => $request->huisje_3,
