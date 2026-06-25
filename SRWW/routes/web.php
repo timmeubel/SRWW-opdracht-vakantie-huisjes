@@ -1,27 +1,19 @@
 <?php
 
 use App\Http\Controllers\Admin\CMSController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\LotingController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CrudUserController;
-
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/loting', function () {
     $houses = \App\Models\VacationHouse::all();
     return view('loting', ['houses' => $houses]);
 });
-Route::get('/account', function () {
-    return view('account', [
-        'activeInschrijving' => auth()->check()
-            ? \App\Models\Inschrijving::where('user_id', auth()->id())->latest()->first()
-            : null,
-    ]);
-})->name('account');
 Route::post('/loting', [LotingController::class, 'store']);
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -39,6 +31,11 @@ Route::get('/login', function () {
 Route::post('/login', [loginController::class, 'login'])->name('login.store');
 Route::get('/logout', [loginController::class, 'logout'])->name('logout');
 Route::get('/uitloggen', [loginController::class, 'logout'])->name('uitloggen');
+
+Route::get('/account', function () {
+    $activeInschrijving = \App\Models\Inschrijving::where('email', auth()->user()->email)->first();
+    return view('account', compact('activeInschrijving'));
+})->name('account')->middleware('auth');
 
 // Temporary route to inspect database content
 Route::get('/debug-db', function () {
@@ -65,7 +62,24 @@ Route::prefix('admin/cms')->name('admin.cms.')->group(function () {
     Route::post('/house', [CMSController::class, 'storeHouse'])->name('house.store');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::resource('usercrud', CrudUserController::class);
-    Route::get('/admin/usercrud', [CrudUserController::class, 'index']);
+// Route om de tabel met alle gebruikers te zien (Read)
+Route::get('/gebruikers', [UserController::class, 'index'])->name('users.index');
+
+// Route om het bewerkscherm te openen (Update - pagina)
+Route::get('/gebruikers/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+// Route om de bewerkte gegevens op te slaan (Update - actie)
+Route::put('/gebruikers/{user}', [UserController::class, 'update'])->name('users.update');
+
+// Route om de admin-rol om te draaien (Update - admin actie)
+Route::patch('/gebruikers/{user}/toggle-admin', [UserController::class, 'toggleAdmin'])->name('users.toggleAdmin');
+
+// Route om een gebruiker te verwijderen (Delete)
+Route::delete('/gebruikers/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::get('/gebruikers', [UserController::class, 'index'])->name('users.index');
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', UserController::class);
+    // This automatically creates 'admin.users.index'
 });
