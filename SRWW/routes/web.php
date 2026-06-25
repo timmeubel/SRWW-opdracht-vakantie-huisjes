@@ -18,10 +18,23 @@ Route::get('/loting', function () {
     $houses = \App\Models\VacationHouse::all();
     return view('loting', ['houses' => $houses]);
 });
+Route::get('/account', function () {
+    return view('account', [
+        'activeInschrijving' => auth()->check()
+            ? \App\Models\Inschrijving::where('user_id', auth()->id())->latest()->first()
+            : null,
+    ]);
+})->name('account');
 Route::post('/loting', [LotingController::class, 'store']);
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
+
+Route::get('/verify-email/notice', function () {
+    return view('verify-email');
+})->name('verify.notice');
+
+Route::get('/verify-email/{token}', [RegisterController::class, 'verifyEmail'])->name('verify.email');
 
 Route::get('/login', function () {
     return view('login');
@@ -39,7 +52,8 @@ Route::get('/debug-db', function () {
     ]);
 });
 
-Route::get('/admin', [adminController::class, 'admin'])->name('admin');;
+Route::get('/admin', [adminController::class, 'admin'])->name('admin');
+Route::get('/admin/export-inschrijvingen', [adminController::class, 'exportInschrijvingen'])->name('admin.export.inschrijvingen');
 
 Route::get('/admin/loting', [\App\Http\Controllers\AdminLotingController::class, 'index'])->name('admin.loting.index');
 
